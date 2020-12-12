@@ -1,0 +1,261 @@
+package api;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.*;
+import java.util.*;
+
+public class DWGraph_Algo implements dw_graph_algorithms{
+    directed_weighted_graph dwg;
+    HashMap<Integer,DWTNode_DS> node_map=new HashMap<>();
+    /**
+     * Init the graph on which this set of algorithms operates on.
+     *
+     * @param g
+     */
+    @Override
+    public void init(directed_weighted_graph g) {
+        dwg=g;
+    }
+
+    /**
+     * Return the underlying graph of which this class works.
+     *
+     * @return
+     */
+    @Override
+    public directed_weighted_graph getGraph() {
+        return dwg;
+    }
+
+    /**
+     * Compute a deep copy of this weighted graph.
+     *
+     * @return
+     */
+    @Override
+    public directed_weighted_graph copy() {
+        return new DWGraph_DS(dwg);
+    }
+
+    /**
+     * Preforms BFS algorithm on the graph.
+     * https://en.wikipedia.org/wiki/Breadth-first_search
+     * We mark our nodes as unvisited (color them in blue)
+     * we add the nodes to the que.
+     * @return
+     */
+    public boolean bfs(directed_weighted_graph dwg){
+        for (node_data n : dwg.getV()) { // set the distance to max for all nodes from the source node.
+            n.setInfo("blue"); // lets mark all nodes as blue for unvisited.
+        }
+        Queue<node_data> queue = new LinkedList<>(); // we define a queue to save all nodes.
+        queue.add(dwg.getV().iterator().next());//add the first none null node to the queue.
+        int count=0;//we mark the amount of nodes visited.
+
+        while (!queue.isEmpty()) { //bfs
+            node_data curr = queue.poll(); //pull the 1st node from the queue.
+            for (edge_data adjacent : dwg.getE(curr.getKey())) {//iterate all of currs neibours.
+                if (dwg.getNode(adjacent.getDest()).getInfo()=="blue") {//if we haven't seen the neibour we put it in the queue.
+                    dwg.getNode(adjacent.getDest()).setInfo("red");
+                    count++;
+                    queue.add(dwg.getNode(adjacent.getDest()));
+                }
+
+            }
+
+        }
+        if(count==dwg.nodeSize())
+            return true;
+        return false;
+    }
+
+    /**
+     * Returns true if and only if (iff) there is a valid path from each node to each
+     * other node. NOTE: assume directional graph (all n*(n-1) ordered pairs).
+     * We preform bfs once , we revert the graph and we do it again.
+     * If we both results are true , then our graph is strongly connected.
+     * @return
+     */
+    @Override
+    public boolean isConnected() {
+        if (dwg.nodeSize() == 0 || dwg.nodeSize() == 1) // if our graph contains 0/1 nodes its connected.
+            return true;
+        if(!bfs(dwg)){ //Means graph is not even connected.
+            return false;
+        }
+        DWGraph_DS dwg_copy= new DWGraph_DS(dwg);
+        dwg_copy.reverse_graph();
+        if(bfs(dwg)){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * returns the length of the shortest path between src to dest
+     * Note: if no such path --> returns -1
+     *
+     * @param src  - start node
+     * @param dest - end (target) node
+     * @return
+     */
+    @Override
+    public double shortestPathDist(int src, int dest) {
+        if (dwg.getNode(src) == null || dwg.getNode(dest) == null) // if our graph can't reach either of them.
+            return -1;
+
+        if (src == dest)// in case we get the same node.
+            return 0;
+
+        PriorityQueue<DWTNode_DS> queue = new PriorityQueue<>(11, new Comparator<DWTNode_DS>() {//we define a comparator.
+            @Override
+            public int compare(DWTNode_DS o1, DWTNode_DS o2) {
+                if(o1.getDistance()<o2.getDistance())
+                    return -1;
+                if(o1.getDistance()>o2.getDistance())
+                    return 1;
+                else
+                    return 0;
+            }
+        });
+
+
+        for (node_data n : dwg.getV()) {// set the distance to max for all nodes from the source node.
+            node_map.put(n.getKey(),new DWTNode_DS(n));
+            n.setInfo("blue"); // lets mark all nodes as blue for unvisited.
+        }
+
+        node_map.get(src).setDistance(0);
+        node_map.get(src).setParent(-1);
+
+        queue.add(node_map.get(src));//we add the src node to the queue.
+
+        while (!queue.isEmpty()) {
+
+            DWTNode_DS curr = queue.remove();//pull the first from the queue.
+            dwg.getNode(curr.getKey()).setInfo("red");
+
+            for (edge_data adjacent : dwg.getE(curr.getKey())) {//iterate all of currs neibours.
+
+                if (dwg.getNode(adjacent.getDest()).getInfo() == "blue") { // lets check all unvisited children
+
+                    if(node_map.get(adjacent.getDest()).getDistance()>(curr.getDistance() + dwg.getEdge(adjacent.getSrc(), adjacent.getDest()).getWeight())) {//if new distance is smaller, update the it.
+                        node_map.get(adjacent.getDest()).setDistance(curr.getDistance() + dwg.getEdge(adjacent.getSrc(), adjacent.getDest()).getWeight());//set the tag of the node to be the previous Weight + new Weight.
+                        queue.add(node_map.get(adjacent.getDest()));
+
+                        node_map.get(adjacent.getDest()).setParent(curr.getKey());
+
+                    }
+
+
+                }
+            }
+        }
+        if(node_map.get(dest).getDistance()==Integer.MAX_VALUE){
+            return -1;
+        }
+        return node_map.get(dest).getDistance(); //if we haven't found it return -1.
+    }
+
+    /**
+     * returns the the shortest path between src to dest - as an ordered List of nodes:
+     * src--> n1-->n2-->...dest
+     * see: https://en.wikipedia.org/wiki/Shortest_path_problem
+     * Note if no such path --> returns null;
+     *
+     * @param src  - start node
+     * @param dest - end (target) node
+     * @return
+     */
+    @Override
+    public List<node_data> shortestPath(int src, int dest) {
+        if(dwg.getNode(src)==null || dwg.getNode(dest)==null)//if either of them doesn't exist we return null.
+            return null;
+
+        shortestPathDist(src,dest);//lets mark the distance between all nodes and the src.
+
+       List<node_data> nodelist=new LinkedList<>();
+
+        if(src==dest) {
+            nodelist.add(dwg.getNode(src));
+            return nodelist;
+        }
+       nodelist.add(dwg.getNode(dest));
+
+       DWTNode_DS curr=node_map.get(dest);
+       /* if(curr==null){
+            return null;
+        }
+
+        */
+        while(curr.getParent()!=-1){
+            nodelist.add(dwg.getNode(curr.getParent()));
+            curr=node_map.get(curr.getParent());
+            }
+
+       /* for(node_data n:nodelist){
+            System.out.print(n.getKey()+ "-> ");
+        }
+
+        */
+        Collections.reverse(nodelist);
+
+       return nodelist;
+    }
+
+    /**
+     * Saves this weighted (directed) graph to the given
+     * file name - in JSON format
+     *
+     * @param file - the file name (may include a relative path).
+     * @return true - iff the file was successfully saved
+     */
+    @Override
+    public boolean save(String file) {
+        Gson gson=new GsonBuilder().create();
+        String json=gson.toJson(dwg);
+
+        try {
+            FileWriter file_name = new FileWriter("./"+file+ ".json");
+            file_name.write(json);
+            file_name.flush();
+            return true;
+        } catch (IOException ex) {
+            return false;
+        }
+
+    }
+
+    /**
+     * This method load a graph to this graph algorithm.
+     * if the file was successfully loaded - the underlying graph
+     * of this class will be changed (to the loaded one), in case the
+     * graph was not loaded the original graph should remain "as is".
+     *
+     * @param file - file name of JSON file
+     * @return true - iff the graph was successfully loaded.
+     */
+    @Override
+    public boolean load(String file) { //Needs some working.
+        try {
+            //Gson gson=new Gson();
+
+            //String json=reader.toString();
+
+            GsonBuilder gson=new GsonBuilder();
+            gson.registerTypeAdapter(directed_weighted_graph.class,new DWGraph_Json_Deserializer());
+            Gson customGson=gson.create();
+
+            FileReader reader=new FileReader("./"+file+".json");
+            directed_weighted_graph dwg_reloaded=customGson.fromJson(reader,directed_weighted_graph.class);
+
+            dwg=dwg_reloaded;
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+}
