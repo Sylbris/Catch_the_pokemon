@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Objects;
-
+/**
+ * This class represents an implement of the directed_weighted_graph interface.
+ */
 public class DWGraph_DS implements directed_weighted_graph {
     private HashMap<Integer,node_data> graph_nodes;
     private HashMap<Integer,HashMap<Integer,edge_data>> graph_edges; //keeps track of out going edges from node.
@@ -57,6 +59,8 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     /**
      * Deep copy of the graph
+     * This method firstly creates a copy of the graph by iterating all the given graph nodes.
+     * secondly it connects all the nodes if they're connected in the first graph. Runs in O(n^2).
      * @param g
      */
     public DWGraph_DS(directed_weighted_graph g){

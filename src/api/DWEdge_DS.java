@@ -3,6 +3,9 @@ package api;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * This class represent and implement for edge_data interface.
+ */
 public class DWEdge_DS implements edge_data, Serializable {
     private int src;
     private int dest;

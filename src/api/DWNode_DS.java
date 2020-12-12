@@ -1,8 +1,11 @@
 package api;
 
+
 import java.io.Serializable;
 import java.util.Objects;
-
+/**
+ * This class represents an implement of the node_data interface.
+ */
 public class DWNode_DS implements node_data, Serializable {
     private geo_location gl;
     private int key;
@@ -17,7 +20,7 @@ public class DWNode_DS implements node_data, Serializable {
     public DWNode_DS() {
         key=i;
         i++;
-
+        gl=new DWGeo_Location();
     }
 
     /**
@@ -30,6 +33,11 @@ public class DWNode_DS implements node_data, Serializable {
         weight=n.getWeight();
     }
 
+    /**
+     * Compare nodes by their keys.
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -38,6 +46,10 @@ public class DWNode_DS implements node_data, Serializable {
         return key == dwNode_ds.key;
     }
 
+    /**
+     * Will use the node keys to hash.
+     * @return
+     */
     @Override
     public int hashCode() {
         return Objects.hash(key);

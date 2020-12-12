@@ -5,10 +5,16 @@ import api.*;
 import javax.swing.*;
 import java.util.Random;
 
+/**
+ * This Class represents the frame on which the game operates.
+ */
 public class GUI_Frame extends JFrame {
 
 
-
+    /**
+     * Create our game based on the arena.
+     * @param ar
+     */
     public GUI_Frame(Arena ar){
         super();
         GUI gui=new GUI();

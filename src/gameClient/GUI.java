@@ -1,8 +1,12 @@
 package gameClient;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.QuadCurve2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -48,6 +52,11 @@ public class GUI extends JPanel {
         directed_weighted_graph g = _ar.getGraph();
         _w2f = Arena.w2f(g,frame);
     }
+
+    /**
+     * Paint our game.
+     * @param g
+     */
     public void paint(Graphics g) {
         int w = this.getWidth();
         int h = this.getHeight();
@@ -67,6 +76,12 @@ public class GUI extends JPanel {
         }
 
     }
+
+    /**
+     * Draws the graph : We iterate the nodes draw them and for each node we draw
+     * the edges coming out of it.
+     * @param g
+     */
     private void drawGraph(Graphics g) {
         directed_weighted_graph gg = _ar.getGraph();
         Iterator<node_data> iter = gg.getV().iterator();
@@ -82,6 +97,11 @@ public class GUI extends JPanel {
             }
         }
     }
+
+    /**
+     * Draw the pokemons
+     * @param g
+     */
     private void drawPokemons(Graphics g) {
         java.util.List<CL_Pokemon> fs = _ar.getPokemons();
         if(fs!=null) {
@@ -97,7 +117,23 @@ public class GUI extends JPanel {
                 if(c!=null) {
 
                     geo_location fp = this._w2f.world2frame(c);
-                    g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
+                    //g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
+                    if(f.getValue()>=14) {
+                        Image img = new ImageIcon("./src/gameClient/images/dragon.png").getImage();
+                        g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r, null);
+                    }
+                    if(f.getValue()<14 && f.getValue()>=10) {
+                        Image img = new ImageIcon("./src/gameClient/images/grave.png").getImage();
+                        g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r, null);
+                    }
+                    if(f.getValue()<10 && f.getValue()>5) {
+                        Image img = new ImageIcon("./src/gameClient/images/char_2.png").getImage();
+                        g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r, null);
+                    }
+                    if(f.getValue()<=5 ) {
+                        Image img = new ImageIcon("./src/gameClient/images/pichu_2.png").getImage();
+                        g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r, null);
+                    }
 
                     g.drawString(""+f.getValue(), (int)fp.x(), (int)fp.y()-4*r);
 
@@ -105,6 +141,11 @@ public class GUI extends JPanel {
             }
         }
     }
+
+    /**
+     * Draw the agents of the graph.
+     * @param g
+     */
     private void drawAgants(Graphics g) {
         List<CL_Agent> rs = _ar.getAgents();
         //Iterator<OOP_Point3D> itr = rs.iterator();
@@ -117,7 +158,10 @@ public class GUI extends JPanel {
             if(c!=null) {
 
                 geo_location fp = this._w2f.world2frame(c);
-                g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
+                Image img = new ImageIcon("./src/gameClient/images/Poke_Ball2.png").getImage();
+                //Image scaleImage = img.getScaledInstance(50, 50,Image.SCALE_DEFAULT);
+                g.drawImage(img,(int)fp.x()-r, (int)fp.y()-r,  null);
+                //g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
                 g.drawString(""+i, (int)fp.x(), (int)fp.y()-4*r);
             }
         }
@@ -125,7 +169,27 @@ public class GUI extends JPanel {
     private void drawNode(node_data n, int r, Graphics g) {
         geo_location pos = n.getLocation();
         geo_location fp = this._w2f.world2frame(pos);
-        g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
+        if(n.getKey()<=1) {
+            Image img = new ImageIcon("./src/gameClient/images/Building_1.png").getImage();
+            //Image scaleImage = img.getScaledInstance(50, 50,Image.SCALE_DEFAULT);
+            g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r, null);
+        }
+        if(n.getKey()>=2 && n.getKey()<4) {
+            Image img = new ImageIcon("./src/gameClient/images/Building_2.png").getImage();
+            //Image scaleImage = img.getScaledInstance(50, 50,Image.SCALE_DEFAULT);
+            g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r, null);
+        }
+        if(n.getKey()>=4 && n.getKey()<8) {
+            Image img = new ImageIcon("./src/gameClient/images/Building_3.png").getImage();
+            //Image scaleImage = img.getScaledInstance(50, 50,Image.SCALE_DEFAULT);
+            g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r, null);
+        }
+        if(n.getKey()>=8) {
+            Image img = new ImageIcon("./src/gameClient/images/Building_4.png").getImage();
+            //Image scaleImage = img.getScaledInstance(50, 50,Image.SCALE_DEFAULT);
+            g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r, null);
+        }
+        //g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
         g.drawString(""+n.getKey(), (int)fp.x(), (int)fp.y()-4*r);
     }
     private void drawEdge(edge_data e, Graphics g) {

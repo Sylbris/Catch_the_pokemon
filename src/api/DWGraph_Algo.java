@@ -1,11 +1,14 @@
 package api;
 
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.*;
 import java.util.*;
-
+/**
+ * This class represent an implement of the dw_graph_algorithms interface.
+ */
 public class DWGraph_Algo implements dw_graph_algorithms{
     directed_weighted_graph dwg;
     HashMap<Integer,DWTNode_DS> node_map=new HashMap<>();
@@ -42,8 +45,10 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     /**
      * Preforms BFS algorithm on the graph.
      * https://en.wikipedia.org/wiki/Breadth-first_search
-     * We mark our nodes as unvisited (color them in blue)
-     * we add the nodes to the que.
+     * We mark our nodes as unvisited (color them in blue) , iterate over the nodes and color them in red .
+     * We add the nodes to the que , repeat until the queue is empty.
+     *
+     * Runs in O( |V|) time complexity.
      * @return
      */
     public boolean bfs(directed_weighted_graph dwg){
@@ -75,7 +80,10 @@ public class DWGraph_Algo implements dw_graph_algorithms{
      * Returns true if and only if (iff) there is a valid path from each node to each
      * other node. NOTE: assume directional graph (all n*(n-1) ordered pairs).
      * We preform bfs once , we revert the graph and we do it again.
-     * If we both results are true , then our graph is strongly connected.
+     * If both results are true , then our graph is strongly connected.
+     * More information can be found : https://www.geeksforgeeks.org/check-given-directed-graph-strongly-connected-set-2-kosaraju-using-bfs/
+     *
+     * Time Complexity : Runs in O( |V|) time complexity.
      * @return
      */
     @Override
@@ -87,7 +95,13 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         }
         DWGraph_DS dwg_copy= new DWGraph_DS(dwg);
         dwg_copy.reverse_graph();
-        if(bfs(dwg)){
+        dwg=dwg_copy;
+        save("special");
+       // DWGraph_DS dwg_rev=(DWGraph_DS)dwg;
+        //dwg_rev.reverse_graph();
+
+        if(bfs(dwg_copy)){
+
             return true;
         }
         return false;
@@ -96,6 +110,17 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     /**
      * returns the length of the shortest path between src to dest
      * Note: if no such path --> returns -1
+     * We copy all the graph nodes into DWTNode_DS nodes and create a priority queue.
+     * The distance of each node is already set to infinity (Check DWTNode) , We mark all the nodes "blue"
+     * for unvisited. Iterate the graph and check each time for the node with the minimum distance to the "src" node.
+     * Using our priority queue we can always pick the node with minimum distance.
+     * We then update the nodes distance from the "src" node and insert it to the priority queue, and we update its parent.
+     * All is left is choose the targets node distance and return it.
+     *
+     * We use Dijkstra's algorithm here:
+     * https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+     *
+     * This method runs in O(|V|+|E|)
      *
      * @param src  - start node
      * @param dest - end (target) node
@@ -164,6 +189,9 @@ public class DWGraph_Algo implements dw_graph_algorithms{
      * src--> n1-->n2-->...dest
      * see: https://en.wikipedia.org/wiki/Shortest_path_problem
      * Note if no such path --> returns null;
+     * The algorithm performs shortestPathDist between the given nodes. Each node has a parent attribute.
+     * We now iterate over the parent node of the dest node until we get to our source node, each step we add the node
+     * to the list. All is left is to reverse and the list and return it.
      *
      * @param src  - start node
      * @param dest - end (target) node
@@ -209,13 +237,27 @@ public class DWGraph_Algo implements dw_graph_algorithms{
      * Saves this weighted (directed) graph to the given
      * file name - in JSON format
      *
+     * Uses Json custom serializer to save the graph.
+     *
      * @param file - the file name (may include a relative path).
      * @return true - iff the file was successfully saved
      */
     @Override
     public boolean save(String file) {
-        Gson gson=new GsonBuilder().create();
+
+       // GsonBuilder gsonBuilder=new GsonBuilder();
+
+        //gsonBuilder.registerTypeAdapter(directed_weighted_graph.class,new DWGraph_Json_Serializer());
+
+       //Gson customGson=gsonBuilder.create();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(DWGraph_DS.class, new DWGraph_Json_Serializer())
+                .setPrettyPrinting()
+                .create();
+
         String json=gson.toJson(dwg);
+
+        System.out.println(json);
 
         try {
             FileWriter file_name = new FileWriter("./"+file+ ".json");
@@ -233,6 +275,8 @@ public class DWGraph_Algo implements dw_graph_algorithms{
      * if the file was successfully loaded - the underlying graph
      * of this class will be changed (to the loaded one), in case the
      * graph was not loaded the original graph should remain "as is".
+     *
+     * This methods uses DWGraph_Json_Deserializer to parse the json into a graph.
      *
      * @param file - file name of JSON file
      * @return true - iff the graph was successfully loaded.
@@ -252,10 +296,11 @@ public class DWGraph_Algo implements dw_graph_algorithms{
             directed_weighted_graph dwg_reloaded=customGson.fromJson(reader,directed_weighted_graph.class);
 
             dwg=dwg_reloaded;
+            return true;
 
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            return false;
         }
-        return false;
+
     }
 }
