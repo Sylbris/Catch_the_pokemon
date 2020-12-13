@@ -3,6 +3,7 @@
 # Catch the Pokemon
 [![Generic badge](https://img.shields.io/badge/build-passing-<COLOR>.svg)](https://shields.io/)
 [![Generic badge](https://img.shields.io/badge/gson-2.8.6-yellow.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/JavaDoc-Click-green.svg)](https://shields.io/)
 [![Maintenance](https://img.shields.io/badge/issues-2-red.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 
 Catch the pokemon is an assignment given by Ariel university in OOP class.
