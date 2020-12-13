@@ -52,10 +52,28 @@ https://github.com/Sylbris/Catch_the_pokemon/wiki
 | save(String file)  | Saves the graph in json format  | O(V+E) | 
 | load(String load)  | Load the graph in json format  | O(V+E) | 
 
+More information and implement methods can be found in Java docs :
 
+https://sylbris.github.io/Catch_the_pokemon/docs/index.html
 
 # Installation
 
+Copy the repository , run Ex2
+
 # Overview
 
+This project uses varias graph algorithms such as Breadth first search and Dijkstra's algorithm.
+More information can be found : 
+https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+
+https://en.wikipedia.org/wiki/Breadth-first_search
+
+https://en.wikipedia.org/wiki/Shortest_path_problem
+
+
+
 # Test
+There are a couple test files for any none trivial class.
+
+# Common issues
+There are currenctly few issues, please check the issues tab for more information.
