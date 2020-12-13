@@ -18,6 +18,7 @@ each entry indicates the source of the edge, and each edge has a Hashmap contain
 ![alt text](https://i.ibb.co/FVTPqF9/leonardo.jpg)
 
 I choose a Hashmap since its cost efficient regarding insertion and deletion (O(1)).
+The second part is a dynamic game in which i go extensively about in the Wikipages.
 
 # Methods
 | DWGraph_DS  | Use | Run time | 
