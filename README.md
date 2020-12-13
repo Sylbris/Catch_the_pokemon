@@ -10,7 +10,7 @@ Catch the pokemon is an assignment given by Ariel university in OOP class.
 The purpose of the assignment is to design an algorithmic solution to catch 
 the maximum amount of Pokemons. More information about the game can be found in wiki pages.
 
-# Desciption
+# Description
 The first part of the project is based on a directed weighted graph implementation,
 I choose a Hashmap in order to store the nodes , the entries contain the node key and
 and the values are the nodes themself.
