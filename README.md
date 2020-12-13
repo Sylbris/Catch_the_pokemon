@@ -2,6 +2,7 @@
 
 # Catch the Pokemon
 [![Generic badge](https://img.shields.io/badge/build-passing-<COLOR>.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/gson-2.8.6-yellow.svg)](https://shields.io/)
 [![Maintenance](https://img.shields.io/badge/issues-2-red.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 
 Catch the pokemon is an assignment given by Ariel university in OOP class.
@@ -18,7 +19,9 @@ each entry indicates the source of the edge, and each edge has a Hashmap contain
 ![alt text](https://i.ibb.co/FVTPqF9/leonardo.jpg)
 
 I choose a Hashmap since its cost efficient regarding insertion and deletion (O(1)).
+
 The second part is a dynamic game in which i go extensively about in the Wikipages.
+https://github.com/Sylbris/Catch_the_pokemon/wiki
 
 # Methods
 | DWGraph_DS  | Use | Run time | 
