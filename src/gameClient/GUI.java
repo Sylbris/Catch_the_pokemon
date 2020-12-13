@@ -66,6 +66,19 @@ public class GUI extends JPanel {
         drawGraph(g);
         drawAgants(g);
         drawInfo(g);
+        //drawScore(g);
+    }
+    private void drawScore(Graphics g){
+        double Total_Score=0;
+        List<CL_Agent> rs = _ar.getAgents();
+        for(int i=0;i<rs.size() && rs!=null ;i++){
+            Total_Score+=rs.get(i).getValue();
+        }
+        g.setColor(Color.BLACK);
+        Font bigFont = new Font("Monospaced", Font.BOLD, 18);
+        g.setFont(bigFont);
+        g.drawString("Score : "+ Total_Score,1000,100);
+        g.drawString("Level : "+ 0,1000,120);
 
     }
     private void drawInfo(Graphics g) {
@@ -163,6 +176,7 @@ public class GUI extends JPanel {
                 g.drawImage(img,(int)fp.x()-r, (int)fp.y()-r,  null);
                 //g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
                 g.drawString(""+i, (int)fp.x(), (int)fp.y()-4*r);
+                g.drawString("value : "+rs.get(i-1).getValue(), (int)fp.x(), (int)fp.y()-4*r -40);
             }
         }
     }

@@ -4,6 +4,7 @@ import api.directed_weighted_graph;
 import api.edge_data;
 import api.geo_location;
 import api.node_data;
+import com.google.gson.JsonObject;
 import gameClient.util.Point3D;
 import gameClient.util.Range;
 import gameClient.util.Range2D;
@@ -27,6 +28,7 @@ public class Arena {
 	private List<CL_Agent> _agents;
 	private List<CL_Pokemon> _pokemons;
 	private List<String> _info;
+	private static int level=0;
 	private static Point3D MIN = new Point3D(0, 100,0);
 	private static Point3D MAX = new Point3D(0, 100,0);
 
@@ -81,7 +83,6 @@ public class Arena {
 
 	}
 
-	
 	public directed_weighted_graph getGraph() {
 		return _gg;
 	}

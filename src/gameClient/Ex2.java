@@ -4,9 +4,12 @@ import Server.Game_Server_Ex2;
 import api.directed_weighted_graph;
 import api.edge_data;
 import api.game_service;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
@@ -15,18 +18,20 @@ import api.*;
 public class Ex2 implements Runnable{
     private static GUI_Frame _win;
     private static Arena _ar;
-
+    private static int arg=4;
 
     public static void main(String[] a) {
-
-            Thread client = new Thread(new Ex2());
+        if(a.length>0)
+            arg=Integer.parseInt(a[0]);
+        Thread client = new Thread(new Ex2());
             client.start();
+
 
     }
 
     @Override
     public void run() {
-        int scenario_num=23;
+        int scenario_num=arg;
 
 
                 game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
@@ -35,6 +40,22 @@ public class Ex2 implements Runnable{
                 String g = game.getGraph();
                 String pks = game.getPokemons();
                 directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
+                //directed_weighted_graph gg=new DWGraph_DS();
+                //dw_graph_algorithms gr=new DWGraph_Algo();
+                //gr.init(gg);
+                //gr.load(g);
+                //directed_weighted_graph gt=gr.getGraph();
+                //System.out.println(gt);
+        ///////////////////////////////////////////////////////////////////////////////////////*
+        /*
+        GsonBuilder gson=new GsonBuilder();
+        gson.registerTypeAdapter(directed_weighted_graph.class,new DWGraph_Json_Deserializer());
+        Gson customGson=gson.create();
+
+
+        directed_weighted_graph dwg_reloaded=customGson.fromJson(g,directed_weighted_graph.class);
+        System.out.println(dwg_reloaded);*/
+        ////////////////////////////////////////////////////////////////////////////////////
                 init(game);
 
                 game.startGame();
@@ -44,6 +65,7 @@ public class Ex2 implements Runnable{
 
                 while (game.isRunning()) {
                     moveAgants(game, gg);
+                    //moveAgants(game, dwg_reloaded);
                     try {
                         if (ind % 1 == 0) {
                             _win.repaint();
@@ -158,13 +180,37 @@ public class Ex2 implements Runnable{
     private void init(game_service game) {
         String g = game.getGraph();
         String fs = game.getPokemons();
-        directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used(); ////////////////////need to change to my method
-        //gg.init(g);
+        //System.out.println(g);
+        //directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used(); ////////////////////need to change to my method
+///////////////////////////////////////////////////////////////////////////////////////
+
+        GsonBuilder gson=new GsonBuilder();
+        gson.registerTypeAdapter(directed_weighted_graph.class,new DWGraph_Json_Deserializer());
+        Gson customGson=gson.create();
+
+
+        directed_weighted_graph dwg_reloaded=customGson.fromJson(g,directed_weighted_graph.class);
+        System.out.println(dwg_reloaded);
+
+
+        ////////////////////////////////////////////////////////////////////////////////////
+        //directed_weighted_graph gg=new DWGraph_DS();
+        //dw_graph_algorithms g_algo=new DWGraph_Algo();
+
+        //g_algo.init(gg);
+       // g_algo.load(g);
+
+        //directed_weighted_graph gr= g_algo.getGraph();
+       // gg.init(g);
+
         _ar = new Arena(); //builds the arena of the graph.
 
-        _ar.setGraph(gg);
+        //_ar.setGraph(gg);
+        //System.out.println(gr);
+        _ar.setGraph(dwg_reloaded);
 
         _ar.setPokemons(Arena.json2Pokemons(fs));
+
 
         _win=new GUI_Frame(_ar);
 
@@ -178,6 +224,7 @@ public class Ex2 implements Runnable{
             JSONObject game_json = line.getJSONObject("GameServer");
 
             int num_of_agents = game_json.getInt("agents");
+            //int game_level = game_json.getInt("game_level");
 
             System.out.println(info);
             System.out.println(game.getPokemons());
@@ -186,7 +233,8 @@ public class Ex2 implements Runnable{
             ArrayList<CL_Pokemon> cl_fs = Arena.json2Pokemons(game.getPokemons());
 
             for(int a = 0;a<cl_fs.size();a++) {
-                Arena.updateEdge(cl_fs.get(a),gg);
+                //Arena.updateEdge(cl_fs.get(a),gg);
+                Arena.updateEdge(cl_fs.get(a),dwg_reloaded);
             }
 
             PriorityQueue<CL_Pokemon> p_queue_pokemon=new PriorityQueue<>((x, y) -> Double.compare(y.getValue(), x.getValue())); //Max queue
@@ -200,6 +248,7 @@ public class Ex2 implements Runnable{
                 int agent_src_node=clp.get_edge().getSrc();
                 game.addAgent(agent_src_node);
             }
+
         }
         catch (JSONException e) {e.printStackTrace();}
     }
