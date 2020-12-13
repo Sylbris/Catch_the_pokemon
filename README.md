@@ -15,7 +15,7 @@ and the values are the nodes themself.
 
 To implement the edges i choose a Hashmap of Hashmaps, So Hashmap<Interger,Hashmap<Integer,edge>>
 each entry indicates the source of the edge, and each edge has a Hashmap containing its neighbours.
-![alt text](https://ibb.co/xHT48Ny)
+![alt text](https://i.ibb.co/FVTPqF9/leonardo.jpg)
 
 I choose a Hashmap since its cost efficient regarding insertion and deletion (O(1)).
 
