@@ -21,7 +21,19 @@ class DWGraph_AlgoTest {
     void isConnected() {
         directed_weighted_graph g0;
         dw_graph_algorithms ag0 = new DWGraph_Algo();
-        g0 = DWGraph_DSTest.graph_creator(10,6,1);
+        g0 = DWGraph_DSTest.graph_creator(6,0,1);
+        g0.connect(0,1,1);
+        g0.connect(0,3,5);
+        g0.connect(1,4,1);
+        g0.connect(1,2,10);
+        g0.connect(2,4,4);
+        g0.connect(2,3,2);
+        g0.connect(3,0,3);
+        g0.connect(4,5,1);
+        g0.connect(5,2,2);
+
+        directed_weighted_graph g1=new DWGraph_DS(g0);
+
         ag0.init(g0);
         boolean b = ag0.isConnected();
         //Assertions.assertFalse(b);
@@ -96,8 +108,8 @@ class DWGraph_AlgoTest {
         ag0.init(g0);
         String str = "g2";
         ag0.save(str);
-        //directed_weighted_graph g1=new DWGraph_DS(g0);
-        // ag0.load(str);
+        directed_weighted_graph g1=new DWGraph_DS(g0);
+        ag0.load(str);
         //Assertions.assertEquals(ag0.getGraph(),g1);
        // g0.removeNode(0);
         //Assertions.assertNotEquals(g0,g1);

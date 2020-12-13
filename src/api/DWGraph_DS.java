@@ -58,6 +58,26 @@ public class DWGraph_DS implements directed_weighted_graph {
     }
 
     /**
+     * toString method
+     * @return
+     */
+    @Override
+    public String toString() {
+        String graph="Edge : [";
+        for(node_data n:getV()){
+
+            String node=" "+n.getKey()+" : ";
+            graph=graph+node;
+            for(edge_data e:getE(n.getKey())){
+                String edge=" [ "+e.getDest()+" ] ";
+                graph=graph+edge;
+            }
+        }
+        graph=graph+" ]";
+        return graph;
+    }
+
+    /**
      * Deep copy of the graph
      * This method firstly creates a copy of the graph by iterating all the given graph nodes.
      * secondly it connects all the nodes if they're connected in the first graph. Runs in O(n^2).
@@ -70,16 +90,18 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         for(node_data i:g.getV()){
             node_data n=new DWNode_DS(i);
-            graph_nodes.put(n.getKey(),n);
+            graph_nodes.put(i.getKey(),n);
+
             HashMap<Integer,edge_data> k=new HashMap<>();
             HashMap<Integer,edge_data> r=new HashMap<>();
-            graph_edges.put(n.getKey(),k);
-            graph_in_edges.put(n.getKey(),r);
+
+            graph_edges.put(i.getKey(),k);
+            graph_in_edges.put(i.getKey(),r);
         }
         for(node_data n:g.getV()){
             for(edge_data e:g.getE(n.getKey()))
             {
-                this.connect(n.getKey(),e.getDest(),e.getWeight());
+                this.connect(e.getSrc(),e.getDest(),e.getWeight());
             }
         }
 
@@ -93,9 +115,15 @@ public class DWGraph_DS implements directed_weighted_graph {
      * This will be later used in graph algorithms.
      */
     public void reverse_graph(){
+        System.out.println("graph edges: " + graph_edges);
+        System.out.println("graph in edges: " + graph_in_edges);
+        System.out.println("");
         HashMap<Integer,HashMap<Integer,edge_data>> temp=graph_edges;
         this.graph_edges=graph_in_edges;
         this.graph_in_edges=temp;
+
+        System.out.println("graph edges: " + graph_edges);
+        System.out.println("graph in edges: " + graph_in_edges);
     }
     /**
      * returns the node_data by the node_id,

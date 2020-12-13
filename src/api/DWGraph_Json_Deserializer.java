@@ -3,10 +3,7 @@ package api;
 import com.google.gson.*;
 
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *  This class represents a Json deserializer to parse json into graph.
@@ -32,28 +29,31 @@ public class DWGraph_Json_Deserializer implements JsonDeserializer<directed_weig
         //code to build graph from json
         JsonArray Nodes=jsonObject.get("Nodes").getAsJsonArray();
         JsonArray Edges= jsonObject.get("Edges").getAsJsonArray();
-
+        int firstkey=0;
         for(int i=0;i<Nodes.size();i++){
             JsonObject jsonNodeData=Nodes.get(i).getAsJsonObject();
             String str=jsonNodeData.get("pos").getAsString();
             List<String> coords = Arrays.asList(str.split(","));
-
+            //System.out.println("size: "+ coords.size());
             float x=Float.parseFloat(coords.get(0));
-            float y=Float.parseFloat(coords.get(1));
+            float y=Float.parseFloat(coords.get(0));
 
             geo_location gl_node=new DWGeo_Location(x,y,0);
 
             node_data n=new DWNode_DS();
+            if(i==0)
+                firstkey=n.getKey();
+            //System.out.println("key: "+ n.getKey());
+            n.setLocation(gl_node);
             dwg.addNode(n);
-            dwg.getNode(i).setLocation(gl_node);
         }
-
+        Iterator <node_data> it=dwg.getV().iterator();
        for(int i=0;i< Edges.size();i++){
            JsonObject jsonEdgeData=Edges.get(i).getAsJsonObject();
            int src=jsonEdgeData.get("src").getAsInt();
            int dest=jsonEdgeData.get("dest").getAsInt();
            double weight=jsonEdgeData.get("w").getAsDouble();
-           dwg.connect(src,dest,weight);
+           dwg.connect(src+firstkey,dest+firstkey,weight);
        }
 
         return dwg;

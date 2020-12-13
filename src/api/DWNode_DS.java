@@ -28,6 +28,7 @@ public class DWNode_DS implements node_data, Serializable {
      * @param n
      */
     public DWNode_DS(node_data n) {
+        key=n.getKey();
         gl=n.getLocation();
         key=n.getKey();
         weight=n.getWeight();

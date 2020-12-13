@@ -71,6 +71,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
             }
 
         }
+
         if(count==dwg.nodeSize())
             return true;
         return false;
@@ -93,11 +94,14 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         if(!bfs(dwg)){ //Means graph is not even connected.
             return false;
         }
+        //System.out.println(dwg.toString());
+        //System.out.println("");
         DWGraph_DS dwg_copy= new DWGraph_DS(dwg);
         dwg_copy.reverse_graph();
+        //System.out.println(dwg_copy.toString());
         dwg=dwg_copy;
-        save("special");
-       // DWGraph_DS dwg_rev=(DWGraph_DS)dwg;
+
+        //DWGraph_DS dwg_rev=(DWGraph_DS)dwg;
         //dwg_rev.reverse_graph();
 
         if(bfs(dwg_copy)){
