@@ -41,12 +41,12 @@ I choose a Hashmap since its cost efficient regarding insertion and deletion (O(
 | init | initiliaze the graph  | O(1) | 
 | get_graph()  | Returns the graph  | O(1) | 
 | copy()  | returns a deep copy of the graph | O(n^2) |
-| bfs(directed_weighted_graph dwg) | performs one bfs on a given graph  | O(|V|+|E|) | 
+| bfs(directed_weighted_graph dwg) | performs one bfs on a given graph  | O(V+E) | 
 | isConnected()  | check if the graph is strongly connected  | O(n^2) | 
-| shortestPathDist(int src, int dest)  | returns the shortest path between given nodes.  | O(|V|+|E|) | 
-| shortestPath(int src, int dest)  | returns a list of the shortest path  | O(|V|+|E|) | 
-| save(String file)  | Saves the graph in json format  | O(|V|+|E|) | 
-| load(String load)  | Load the graph in json format  | O(|V|+|E|) | 
+| shortestPathDist(int src, int dest)  | returns the shortest path between given nodes.  | O(V+E) | 
+| shortestPath(int src, int dest)  | returns a list of the shortest path  | O(V+E) | 
+| save(String file)  | Saves the graph in json format  | O(V+E) | 
+| load(String load)  | Load the graph in json format  | O(V+E) | 
 
 
 
