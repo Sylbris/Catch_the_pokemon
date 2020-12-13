@@ -1,3 +1,5 @@
+![alt text](https://i.insider.com/5798d6b1dd08951e578b47e6?width=700&format=jpeg&auto=webp)
+
 # Catch the Pokemon
 [![Generic badge](https://img.shields.io/badge/build-passing-<COLOR>.svg)](https://shields.io/)
 [![Maintenance](https://img.shields.io/badge/issues-2-red.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
