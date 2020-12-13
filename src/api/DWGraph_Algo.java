@@ -91,19 +91,12 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     public boolean isConnected() {
         if (dwg.nodeSize() == 0 || dwg.nodeSize() == 1) // if our graph contains 0/1 nodes its connected.
             return true;
+
         if(!bfs(dwg)){ //Means graph is not even connected.
             return false;
         }
-        //System.out.println(dwg.toString());
-        //System.out.println("");
         DWGraph_DS dwg_copy= new DWGraph_DS(dwg);
-        dwg_copy.reverse_graph();
-        //System.out.println(dwg_copy.toString());
-        dwg=dwg_copy;
-
-        //DWGraph_DS dwg_rev=(DWGraph_DS)dwg;
-        //dwg_rev.reverse_graph();
-
+        dwg_copy.reverse_graph(dwg);
         if(bfs(dwg_copy)){
 
             return true;

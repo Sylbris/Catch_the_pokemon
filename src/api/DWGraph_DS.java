@@ -63,6 +63,15 @@ public class DWGraph_DS implements directed_weighted_graph {
      */
     @Override
     public String toString() {
+        String graph_Nodes="Nodes : [";
+        for(node_data n:getV()){
+
+            String node=" "+n.getKey()+" : ";
+            graph_Nodes+=node;
+
+        }
+        graph_Nodes+=" ]";
+
         String graph="Edge : [";
         for(node_data n:getV()){
 
@@ -74,7 +83,7 @@ public class DWGraph_DS implements directed_weighted_graph {
             }
         }
         graph=graph+" ]";
-        return graph;
+        return graph_Nodes+graph;
     }
 
     /**
@@ -112,18 +121,34 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     /**
      * Reverses the graph (naive swap)
-     * This will be later used in graph algorithms.
+     * This method simply goes over the graph, and connects it the other way instead of what it was.
+     *
+     * Runs in O(n^2) 
      */
-    public void reverse_graph(){
-        System.out.println("graph edges: " + graph_edges);
-        System.out.println("graph in edges: " + graph_in_edges);
-        System.out.println("");
-        HashMap<Integer,HashMap<Integer,edge_data>> temp=graph_edges;
-        this.graph_edges=graph_in_edges;
-        this.graph_in_edges=temp;
+    public void reverse_graph(directed_weighted_graph g){
+        this.graph_nodes=new HashMap<>();
+        this.graph_edges=new HashMap<>();
+        this.graph_in_edges=new HashMap<>();
 
-        System.out.println("graph edges: " + graph_edges);
-        System.out.println("graph in edges: " + graph_in_edges);
+        for(node_data i:g.getV()){
+            node_data n=new DWNode_DS(i);
+            graph_nodes.put(i.getKey(),n);
+
+            HashMap<Integer,edge_data> k=new HashMap<>();
+            HashMap<Integer,edge_data> r=new HashMap<>();
+
+            graph_edges.put(i.getKey(),k);
+            graph_in_edges.put(i.getKey(),r);
+        }
+
+        for(node_data n:g.getV()){
+            for(edge_data e:g.getE(n.getKey()))
+            {
+                this.connect(e.getDest(),e.getSrc(),e.getWeight());
+            }
+        }
+
+
     }
     /**
      * returns the node_data by the node_id,
