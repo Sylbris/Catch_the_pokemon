@@ -1,5 +1,6 @@
 # Catch the Pokemon
 [![Generic badge](https://img.shields.io/badge/build-passing-<COLOR>.svg)](https://shields.io/)
+[![GitHub contributors](https://img.shields.io/github/contributors/Naereen/StrapDown.js.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/contributors/)
 
 Catch the pokemon is an assignment given by Ariel university in OOP class.
 The purpose of the assignment is to design an algorithmic solution to catch 
