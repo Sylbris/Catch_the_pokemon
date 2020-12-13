@@ -7,6 +7,8 @@ import api.game_service;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 import api.*;
 
@@ -14,44 +16,58 @@ public class Ex2 implements Runnable{
     private static GUI_Frame _win;
     private static Arena _ar;
 
+
     public static void main(String[] a) {
-        Thread client = new Thread(new Ex2());
-        client.start();
+
+            Thread client = new Thread(new Ex2());
+            client.start();
+
     }
 
     @Override
     public void run() {
-        int scenario_num = 3;
-        game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
-        //	int id = 999;
-        //	game.login(id);
-        String g = game.getGraph();
-        String pks = game.getPokemons();
-        directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
-        init(game);
+        int scenario_num=23;
 
-        game.startGame();
-        _win.setTitle("Ex2 - OOP: (NONE trivial Solution) "+game.toString());
-        int ind=0;
-        long dt=100;
 
-        while(game.isRunning()) {
-            moveAgants(game, gg);
-            try {
-                if(ind%1==0) {
-                    _win.repaint();
+                game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
+                //	int id = 999;
+                //	game.login(id);
+                String g = game.getGraph();
+                String pks = game.getPokemons();
+                directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
+                init(game);
+
+                game.startGame();
+                _win.setTitle("Ex2 - OOP: (NONE trivial Solution) " + game.toString());
+                int ind = 0;
+                long dt = 100;
+
+                while (game.isRunning()) {
+                    moveAgants(game, gg);
+                    try {
+                        if (ind % 1 == 0) {
+                            _win.repaint();
+                        }
+                        Thread.sleep(dt);
+                        ind++;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-                Thread.sleep(dt);
-                ind++;
-            }
-            catch(Exception e) {
-                e.printStackTrace();
-            }
-        }
-        String res = game.toString();
+                String res = game.toString();
+                try {
+                    FileWriter file_name = new FileWriter("./" + scenario_num + ".txt");
+                    file_name.write(res);
+                    file_name.flush();
+                } catch (IOException ex) {
+                    System.out.println("Couldn't save");
+                }
+                System.out.println(res);
 
-        System.out.println(res);
-        System.exit(0);
+
+
+            System.exit(0);
+
     }
     /**
      * Moves each of the agents along the edge,
