@@ -3,6 +3,7 @@ package gameClient;
 import api.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Random;
 
 /**
@@ -19,11 +20,15 @@ public class GUI_Frame extends JFrame {
         super();
         GUI gui=new GUI();
         this.add(gui);
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.setUndecorated(true);
+        //this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setUndecorated(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
+        this.setSize(1400,800);
+        //this.setLayout(new BorderLayout());
+        //pack();
         gui.update(ar);
+
 
     }
 

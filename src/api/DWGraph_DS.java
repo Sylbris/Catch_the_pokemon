@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.Objects;
 /**
  * This class represents an implement of the directed_weighted_graph interface.
+ * My implement has 3 Hashmaps:
+ * graph_nodes -  Will keep the node number and the node itself.
+ * graph_edges -  Will keep the edges of the graph. source is the key and value is another hashmap containing its
+ * neighbours.
+ * graph_in_edges - Same as above only it keeps all edges that go into specific node(will be useful when removing a node)
  */
 public class DWGraph_DS implements directed_weighted_graph {
     private HashMap<Integer,node_data> graph_nodes;
@@ -123,7 +128,7 @@ public class DWGraph_DS implements directed_weighted_graph {
      * Reverses the graph (naive swap)
      * This method simply goes over the graph, and connects it the other way instead of what it was.
      *
-     * Runs in O(n^2) 
+     * Runs in O(n^2)
      */
     public void reverse_graph(directed_weighted_graph g){
         this.graph_nodes=new HashMap<>();
@@ -250,7 +255,7 @@ public class DWGraph_DS implements directed_weighted_graph {
      * Deletes the node (with the given ID) from the graph -
      * and removes all edges which starts or ends at this node.
      * This method should run in O(k), V.degree=k, as all the edges should be removed.
-     *
+     * This method runs over graph_edges && graph_in_edges and removes the neccessery
      * @param key
      * @return the data of the removed node (null if none).
      */

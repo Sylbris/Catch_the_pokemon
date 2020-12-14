@@ -14,6 +14,8 @@ public class DWEdge_DS implements edge_data, Serializable {
     private int tag;
 
     public DWEdge_DS(){
+        tag=0;
+        info="";
     }
     /**
      * Constructor

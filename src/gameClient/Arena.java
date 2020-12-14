@@ -1,9 +1,6 @@
 package gameClient;
 
-import api.directed_weighted_graph;
-import api.edge_data;
-import api.geo_location;
-import api.node_data;
+import api.*;
 import com.google.gson.JsonObject;
 import gameClient.util.Point3D;
 import gameClient.util.Range;
@@ -27,6 +24,7 @@ public class Arena {
 	private directed_weighted_graph _gg;
 	private List<CL_Agent> _agents;
 	private List<CL_Pokemon> _pokemons;
+	private game_service game;
 	private List<String> _info;
 	private static int level=0;
 	private static Point3D MIN = new Point3D(0, 100,0);
@@ -45,10 +43,14 @@ public class Arena {
 	 * @param r
 	 * @param p
 	 */
-	private Arena(directed_weighted_graph g, List<CL_Agent> r, List<CL_Pokemon> p) {
+	private Arena(directed_weighted_graph g, List<CL_Agent> r, List<CL_Pokemon> p, game_service game) {
+		this.game=game;
 		_gg = g;
 		this.setAgents(r);
 		this.setPokemons(p);
+	}
+	public void setGame(game_service game){
+		this.game=game;
 	}
 	public void setPokemons(List<CL_Pokemon> f) {
 		this._pokemons = f;
@@ -94,6 +96,19 @@ public class Arena {
 	}
 
 	////////////////////////////////////////////////////
+	public int getLevel(){
+		try {
+			JSONObject line = new JSONObject(game.toString());
+			JSONObject game_json = line.getJSONObject("GameServer");
+			int game_level = game_json.getInt("game_level");
+			return game_level;
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return 0;
+
+
+	}
 	public static List<CL_Agent> getAgents(String aa, directed_weighted_graph gg) {
 		ArrayList<CL_Agent> ans = new ArrayList<CL_Agent>();
 		try {

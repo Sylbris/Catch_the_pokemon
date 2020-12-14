@@ -18,7 +18,7 @@ import api.*;
 public class Ex2 implements Runnable{
     private static GUI_Frame _win;
     private static Arena _ar;
-    private static int arg=4;
+    private static int arg=0;
 
     public static void main(String[] a) {
         if(a.length>0)
@@ -31,12 +31,12 @@ public class Ex2 implements Runnable{
 
     @Override
     public void run() {
-        int scenario_num=arg;
+        int scenario_num=23;
 
 
                 game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
-                //	int id = 999;
-                //	game.login(id);
+                	//int id = 305475915;
+                	//game.login(id);
                 String g = game.getGraph();
                 String pks = game.getPokemons();
                 directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
@@ -64,11 +64,12 @@ public class Ex2 implements Runnable{
                 long dt = 100;
 
                 while (game.isRunning()) {
-                    moveAgants(game, gg);
+                    //moveAgants(game, gg);
                     //moveAgants(game, dwg_reloaded);
                     try {
                         if (ind % 1 == 0) {
                             _win.repaint();
+                            moveAgants(game, gg);
                         }
                         Thread.sleep(dt);
                         ind++;
@@ -100,7 +101,7 @@ public class Ex2 implements Runnable{
      */
     private static void moveAgants(game_service game, directed_weighted_graph gg) {
 
-        String lg = game.getAgents();
+        String lg = game.move();
         List<CL_Agent> agents = Arena.getAgents(lg,gg);
         _ar.setAgents(agents);
 
@@ -122,7 +123,7 @@ public class Ex2 implements Runnable{
 
 
         }
-        game.move();
+
     }
     /**
      *
@@ -137,44 +138,38 @@ public class Ex2 implements Runnable{
         dwg_algo.init(g);
 
         List<CL_Pokemon> pokedex=_ar.getPokemons(); //get a list of pokemons
-        ArrayList<CL_Pokemon> ratios=new ArrayList<>(); //Max queue
+        List<DWTEdge_Data> edges_improved=new ArrayList<>();
 
-       // if(agent_id+1>ratios.size()){
-       //     return src;
-       // }
-        for(CL_Pokemon cl_p:pokedex){ //add all pokemons to priority max queue.
-            double shortest_path=dwg_algo.shortestPathDist(src,cl_p.get_edge().getDest());
-            cl_p.setRatio(shortest_path/cl_p.getValue());
-            ratios.add(cl_p);
+        for(CL_Pokemon cl_p:pokedex){ //add all edges to the list
+            
+            g.getEdge(cl_p.get_edge().getSrc(),cl_p.get_edge().getDest()).setTag( g.getEdge(cl_p.get_edge().getSrc(),cl_p.get_edge().getDest()).getTag() + (int)cl_p.getValue() );
+            DWTEdge_Data temp_node=new DWTEdge_Data(g.getEdge(cl_p.get_edge().getSrc(),cl_p.get_edge().getDest()));
+            double shortest_path=dwg_algo.shortestPathDist(src, temp_node.getDest());
+            temp_node.setRatio(shortest_path/temp_node.getValue());
+            edges_improved.add(temp_node);
+            
         }
+        //if(num_of_agents>1)
+        //    devide_and_conquer(null);
 
-        Comparator<CL_Pokemon> cla=((x, y) -> Double.compare(y.getValue(), x.getValue()));
-
-        ratios.sort(cla);
-
-        List<node_data> yes=null;
-
-        int r;
-        CL_Pokemon cl=ratios.get(0);
-
-        cl = ratios.get(agent_id); //check for Pokemon with max ratio
-        yes = dwg_algo.shortestPath(src, ratios.get(agent_id).get_edge().getDest());//chase the max pokemon
+        Comparator<DWTEdge_Data> DWEdge_Data_Comparator=((x, y) -> Double.compare(y.getRatio(), x.getRatio()));
+        edges_improved.sort(DWEdge_Data_Comparator);
+        List<node_data> shortest_path = dwg_algo.shortestPath(src, edges_improved.get(agent_id).getDest());
+        
+        
+        if(src==edges_improved.get(agent_id).getDest())
+            return ans=edges_improved.get(agent_id).getSrc();
 
 
-
-        r=pokedex.indexOf(cl);
-
-        if(src==pokedex.get(r).get_edge().getDest())
-            return ans=pokedex.get(r).get_edge().getSrc();
-
-        ans=yes.get(1).getKey();//second organ in list.
-
+        ans=shortest_path.get(1).getKey();//second organ in list.
         return ans;
 
     }
 
     /**
      * Build the game based on the given game data.
+     * Will take all our json data from the server and parse it.
+     * Including positioning our agents.
      * @param game
      */
     private void init(game_service game) {
@@ -182,7 +177,6 @@ public class Ex2 implements Runnable{
         String fs = game.getPokemons();
         //System.out.println(g);
         //directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used(); ////////////////////need to change to my method
-///////////////////////////////////////////////////////////////////////////////////////
 
         GsonBuilder gson=new GsonBuilder();
         gson.registerTypeAdapter(directed_weighted_graph.class,new DWGraph_Json_Deserializer());
@@ -190,10 +184,8 @@ public class Ex2 implements Runnable{
 
 
         directed_weighted_graph dwg_reloaded=customGson.fromJson(g,directed_weighted_graph.class);
-        System.out.println(dwg_reloaded);
 
 
-        ////////////////////////////////////////////////////////////////////////////////////
         //directed_weighted_graph gg=new DWGraph_DS();
         //dw_graph_algorithms g_algo=new DWGraph_Algo();
 
@@ -204,7 +196,7 @@ public class Ex2 implements Runnable{
        // gg.init(g);
 
         _ar = new Arena(); //builds the arena of the graph.
-
+        _ar.setGame(game);
         //_ar.setGraph(gg);
         //System.out.println(gr);
         _ar.setGraph(dwg_reloaded);
@@ -244,9 +236,11 @@ public class Ex2 implements Runnable{
             }
 
             for(int a = 0;a<num_of_agents;a++) {//Adds all agents
+
                 CL_Pokemon clp=p_queue_pokemon.poll();
                 int agent_src_node=clp.get_edge().getSrc();
                 game.addAgent(agent_src_node);
+
             }
 
         }

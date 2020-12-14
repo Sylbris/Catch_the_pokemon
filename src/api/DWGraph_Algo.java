@@ -8,6 +8,8 @@ import java.io.*;
 import java.util.*;
 /**
  * This class represent an implement of the dw_graph_algorithms interface.
+ * dwg - the graph were going to operate on
+ * node_map - a temporary node map to contain a copy of the graph nodes. Check shortestPathDist for more info.
  */
 public class DWGraph_Algo implements dw_graph_algorithms{
     directed_weighted_graph dwg;
@@ -199,7 +201,8 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         if(dwg.getNode(src)==null || dwg.getNode(dest)==null)//if either of them doesn't exist we return null.
             return null;
 
-        shortestPathDist(src,dest);//lets mark the distance between all nodes and the src.
+        if(shortestPathDist(src,dest)==-1)
+            return null;//lets mark the distance between all nodes and the src.
 
        List<node_data> nodelist=new LinkedList<>();
 
@@ -254,7 +257,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 
         String json=gson.toJson(dwg);
 
-        System.out.println(json);
+        //System.out.println(json);
 
         try {
             FileWriter file_name = new FileWriter("./"+file+ ".json");

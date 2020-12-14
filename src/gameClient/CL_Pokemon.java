@@ -3,6 +3,9 @@ import api.edge_data;
 import gameClient.util.Point3D;
 import org.json.JSONObject;
 
+/**
+ * This a class to represent the Pokemons in the arena
+ */
 public class CL_Pokemon {
 	private edge_data _edge;
 	private double _value;
@@ -10,9 +13,17 @@ public class CL_Pokemon {
 	private Point3D _pos;
 	private double min_dist;
 	private int min_ro;
-	private double ratio=0;
+	private static double ratio=0;
 	private int chased_by=0;
-	
+
+	/**
+	 * Constructor
+	 * @param p
+	 * @param t
+	 * @param v
+	 * @param s
+	 * @param e
+	 */
 	public CL_Pokemon(Point3D p, int t, double v, double s, edge_data e) {
 		_type = t;
 	//	_speed = s;
@@ -22,6 +33,12 @@ public class CL_Pokemon {
 		min_dist = -1;
 		min_ro = -1;
 	}
+
+	/**
+	 * Simple from Json to pokemon method
+	 * @param json
+	 * @return
+	 */
 	public static CL_Pokemon init_from_json(String json) {
 		CL_Pokemon ans = null;
 		try {

@@ -31,6 +31,9 @@ public class GUI extends JPanel {
     public GUI() {
         super();
         int _ind = 0;
+        this.setSize(1400,800);
+        this.setVisible(true);
+
     }
 
     /**
@@ -61,12 +64,14 @@ public class GUI extends JPanel {
         int w = this.getWidth();
         int h = this.getHeight();
         g.clearRect(0, 0, w, h);
+        Image img = new ImageIcon("./src/gameClient/images/background.png").getImage();
+        g.drawImage(img, 0, 0,w,h, null);
         updateFrame();
         drawPokemons(g);
         drawGraph(g);
         drawAgants(g);
         drawInfo(g);
-        //drawScore(g);
+        drawScore(g);
     }
     private void drawScore(Graphics g){
         double Total_Score=0;
@@ -86,6 +91,7 @@ public class GUI extends JPanel {
         String dt = "none";
         for(int i=0;i<str.size();i++) {
             g.drawString(str.get(i)+" dt: "+dt,100,60+i*20);
+            g.drawString(_ar.getLevel()+" dt: "+dt,100,60+i*20);
         }
 
     }
@@ -132,20 +138,21 @@ public class GUI extends JPanel {
                     geo_location fp = this._w2f.world2frame(c);
                     //g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
                     if(f.getValue()>=14) {
-                        Image img = new ImageIcon("./src/gameClient/images/dragon.png").getImage();
-                        g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r, null);
+                        Image img = new ImageIcon("./src/gameClient/images/dragonite.png").getImage();
+
+                        g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r-30,5*r,5*r, null);
                     }
                     if(f.getValue()<14 && f.getValue()>=10) {
-                        Image img = new ImageIcon("./src/gameClient/images/grave.png").getImage();
-                        g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r, null);
+                        Image img = new ImageIcon("./src/gameClient/images/grav.png").getImage();
+                        g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r-30, 5*r ,5*r ,null);
                     }
                     if(f.getValue()<10 && f.getValue()>5) {
-                        Image img = new ImageIcon("./src/gameClient/images/char_2.png").getImage();
-                        g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r, null);
+                        Image img = new ImageIcon("./src/gameClient/images/char.png").getImage();
+                        g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r-30, 5*r, 5*r,null);
                     }
                     if(f.getValue()<=5 ) {
-                        Image img = new ImageIcon("./src/gameClient/images/pichu_2.png").getImage();
-                        g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r, null);
+                        Image img = new ImageIcon("./src/gameClient/images/pichu.png").getImage();
+                        g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r-30, 5*r, 5*r, null);
                     }
 
                     g.drawString(""+f.getValue(), (int)fp.x(), (int)fp.y()-4*r);
@@ -171,9 +178,9 @@ public class GUI extends JPanel {
             if(c!=null) {
 
                 geo_location fp = this._w2f.world2frame(c);
-                Image img = new ImageIcon("./src/gameClient/images/Poke_Ball2.png").getImage();
+                Image img = new ImageIcon("./src/gameClient/images/Poke_Ball.png").getImage();
                 //Image scaleImage = img.getScaledInstance(50, 50,Image.SCALE_DEFAULT);
-                g.drawImage(img,(int)fp.x()-r, (int)fp.y()-r,  null);
+                g.drawImage(img,(int)fp.x()-r, (int)fp.y()-r, 3*r, 3*r, null);
                 //g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
                 g.drawString(""+i, (int)fp.x(), (int)fp.y()-4*r);
                 g.drawString("value : "+rs.get(i-1).getValue(), (int)fp.x(), (int)fp.y()-4*r -40);
@@ -183,25 +190,25 @@ public class GUI extends JPanel {
     private void drawNode(node_data n, int r, Graphics g) {
         geo_location pos = n.getLocation();
         geo_location fp = this._w2f.world2frame(pos);
-        if(n.getKey()<=1) {
-            Image img = new ImageIcon("./src/gameClient/images/Building_1.png").getImage();
+        if(n.getKey()%3==0) {
+            Image img = new ImageIcon("./src/gameClient/images/b1.png").getImage();
             //Image scaleImage = img.getScaledInstance(50, 50,Image.SCALE_DEFAULT);
-            g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r, null);
+            g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r, 6*r,6*r,null);
         }
-        if(n.getKey()>=2 && n.getKey()<4) {
-            Image img = new ImageIcon("./src/gameClient/images/Building_2.png").getImage();
+        if(n.getKey()%2==0) {
+            Image img = new ImageIcon("./src/gameClient/images/b2.png").getImage();
             //Image scaleImage = img.getScaledInstance(50, 50,Image.SCALE_DEFAULT);
-            g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r, null);
+            g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r,6*r, 6*r, null);
         }
-        if(n.getKey()>=4 && n.getKey()<8) {
-            Image img = new ImageIcon("./src/gameClient/images/Building_3.png").getImage();
+        if(n.getKey()%5==0) {
+            Image img = new ImageIcon("./src/gameClient/images/b3.png").getImage();
             //Image scaleImage = img.getScaledInstance(50, 50,Image.SCALE_DEFAULT);
-            g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r, null);
+            g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r,6*r, 6*r, null);
         }
-        if(n.getKey()>=8) {
-            Image img = new ImageIcon("./src/gameClient/images/Building_4.png").getImage();
+        if(n.getKey()%7==0) {
+            Image img = new ImageIcon("./src/gameClient/images/b4.png").getImage();
             //Image scaleImage = img.getScaledInstance(50, 50,Image.SCALE_DEFAULT);
-            g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r, null);
+            g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r,6*r, 6*r, null);
         }
         //g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
         g.drawString(""+n.getKey(), (int)fp.x(), (int)fp.y()-4*r);
@@ -212,16 +219,17 @@ public class GUI extends JPanel {
         geo_location d = gg.getNode(e.getDest()).getLocation();
         geo_location s0 = this._w2f.world2frame(s);
         geo_location d0 = this._w2f.world2frame(d);
+        g.setColor(Color.BLACK);
         g.drawLine((int)s0.x(), (int)s0.y(), (int)d0.x(), (int)d0.y());
 
-        double deltaX =  ( d0.y() - d0.y()+10 ) / 2;
-        double deltaY =  ( d0.x() - d0.x() +10 ) / 2;
+        //double deltaX =  ( d0.y() - d0.y()+10 ) / 2;
+        //double deltaY =  ( d0.x() - d0.x() +10 ) / 2;
         //if(s0.x()>d0.x()) {
 
-            int[] x_points = {(int) d0.x(), (int) (d0.x()-deltaX), (int) (d0.x()+deltaX)};
-            int[] y_points = {(int) d0.y()+10 , (int) (d0.y()-deltaY), (int) (d0.y()+deltaY)};
+            //int[] x_points = {(int) d0.x(), (int) (d0.x()-deltaX), (int) (d0.x()+deltaX)};
+           // int[] y_points = {(int) d0.y()+10 , (int) (d0.y()-deltaY), (int) (d0.y()+deltaY)};
 
-            g.fillPolygon(x_points, y_points, 3);
+           // g.fillPolygon(x_points, y_points, 3);
         //}
         //else{
          //   int[] x_points = {(int) d0.x(), (int) d0.x() + 15, (int) d0.x() + 15};
