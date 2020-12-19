@@ -80,15 +80,19 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     }
 
     /**
-     *
+     *  Preforms BFS algorithm on the graph, only here we are given a source node,
+     *  and the amount of nodes we wish to traverse, will be used later on.
      * @param dwg
      * @param amount_of_nodes
+     * @param src_node
      * @return
      */
     public ArrayList<node_data> bfs_n_nodes(directed_weighted_graph dwg, int amount_of_nodes, int src_node){
         if(dwg.getNode(src_node)==null) {
             return null;
         }
+        if(amount_of_nodes==0)
+            return null;
 
         for (node_data n : dwg.getV()) { // set the distance to max for all nodes from the source node.
             n.setInfo("blue"); // lets mark all nodes as blue for unvisited.
@@ -98,7 +102,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         queue.add(dwg.getNode(src_node));//add the first none null node to the queue.
         int count=0;//we mark the amount of nodes visited.
         ArrayList <node_data>awl=new ArrayList<>();
-            while (count<amount_of_nodes ) { //bfs
+            while (count<amount_of_nodes && !queue.isEmpty()) { //bfs
 
                 node_data curr = queue.poll(); //pull the 1st node from the queue.
 

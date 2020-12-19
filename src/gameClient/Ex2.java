@@ -188,7 +188,8 @@ public class Ex2 implements Runnable{
 
     /**
      * A more sophisticated strategy, once applied we divide the graph into sub graphs,
-     * each agent is given its own graph to monitor.
+     * each agent is given its own graph to monitor, in that sub graph we send the agent to the pokemon
+     * with the highest value.
      *
      * @param g
      * @param src
