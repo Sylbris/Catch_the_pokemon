@@ -103,11 +103,12 @@ class DWGraph_AlgoTest {
         ag0=new DWGraph_Algo();
         ag0.init(g0);
         String str = "g2";
-        ag0.save(str);
+
+        assertTrue(ag0.save(str));
         directed_weighted_graph g1=new DWGraph_DS(g0);
         ag0.load(str);
-        //Assertions.assertEquals(ag0.getGraph(),g1);
-       // g0.removeNode(0);
+       // Assertions.assertEquals(ag0.getGraph(),g1);
+        //g0.removeNode(0);
         //Assertions.assertNotEquals(g0,g1);
 
 

@@ -23,6 +23,11 @@ public class DWNode_DS implements node_data, Serializable {
         gl=new DWGeo_Location();
     }
 
+    @Override
+    public String toString() {
+        return "#"+key;
+    }
+
     /**
      * Copy constructor
      * @param n
@@ -32,6 +37,14 @@ public class DWNode_DS implements node_data, Serializable {
         gl=n.getLocation();
         key=n.getKey();
         weight=n.getWeight();
+    }
+
+    /**
+     * Copy constructor with only key.
+     * @param key
+     */
+    public DWNode_DS(int key) {
+        this.key=key;
     }
 
     /**

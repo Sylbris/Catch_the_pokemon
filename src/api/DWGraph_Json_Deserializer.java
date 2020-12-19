@@ -29,34 +29,37 @@ public class DWGraph_Json_Deserializer implements JsonDeserializer<directed_weig
         //code to build graph from json
         JsonArray Nodes=jsonObject.get("Nodes").getAsJsonArray();
         JsonArray Edges= jsonObject.get("Edges").getAsJsonArray();
-        int firstkey=0;
-        for(int i=0;i<Nodes.size();i++){
-            JsonObject jsonNodeData=Nodes.get(i).getAsJsonObject();
-            String [] str=jsonNodeData.get("pos").getAsString().split(",");
+        for(JsonElement i:Nodes){
+            //JsonObject jsonNodeData=Nodes.get(i).getAsJsonObject();
+            int key=((JsonObject)i).get("id").getAsInt();
+            String [] str=((JsonObject)i).get("pos").getAsString().split(",");
             //List<String> coords = Arrays.asList(str.split(","));
             //System.out.println("size: "+ coords.size());
-            Double x=Double.parseDouble(str[0]);
-            Double y=Double.parseDouble(str[1]);
-            Double z=Double.parseDouble(str[2]);
+            double x,y,z;
+            if(str.length>1) {
+                 x = Double.parseDouble(str[0]);
+                 y = Double.parseDouble(str[1]);
+                 z = Double.parseDouble(str[2]);
+            }
+            else{
+                x=0;y=0;z=0;
+            }
 
-            geo_location gl_node=new DWGeo_Location(x,y,0);
+            geo_location gl_node=new DWGeo_Location(x,y,z);
 
-            node_data n=new DWNode_DS();
-            if(i==0)
-                firstkey=n.getKey();
+            node_data n=new DWNode_DS(key);
+
             //System.out.println("key: "+ n.getKey());
             n.setLocation(gl_node);
             dwg.addNode(n);
         }
         Iterator <node_data> it=dwg.getV().iterator();
-       for(int i=0;i< Edges.size();i++){
+       for(JsonElement e:Edges){
 
-           JsonObject jsonEdgeData=Edges.get(i).getAsJsonObject();
-
-           int src=jsonEdgeData.get("src").getAsInt();
-           int dest=jsonEdgeData.get("dest").getAsInt();
-           double weight=jsonEdgeData.get("w").getAsDouble();
-           dwg.connect(src+firstkey,dest+firstkey,weight);
+           int src=((JsonObject)e).get("src").getAsInt();
+           int dest=((JsonObject)e).get("dest").getAsInt();
+           double weight=((JsonObject)e).get("w").getAsDouble();
+           dwg.connect(src,dest,weight);
        }
 
         return dwg;

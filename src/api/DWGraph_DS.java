@@ -98,30 +98,31 @@ public class DWGraph_DS implements directed_weighted_graph {
      * @param g
      */
     public DWGraph_DS(directed_weighted_graph g){
-        this.graph_nodes=new HashMap<>();
-        this.graph_edges=new HashMap<>();
-        this.graph_in_edges=new HashMap<>();
+        if(g!=null) {
+            this.graph_nodes = new HashMap<>();
+            this.graph_edges = new HashMap<>();
+            this.graph_in_edges = new HashMap<>();
 
-        for(node_data i:g.getV()){
-            node_data n=new DWNode_DS(i);
-            graph_nodes.put(i.getKey(),n);
+            for (node_data i : g.getV()) {
+                node_data n = new DWNode_DS(i);
+                graph_nodes.put(i.getKey(), n);
 
-            HashMap<Integer,edge_data> k=new HashMap<>();
-            HashMap<Integer,edge_data> r=new HashMap<>();
+                HashMap<Integer, edge_data> k = new HashMap<>();
+                HashMap<Integer, edge_data> r = new HashMap<>();
 
-            graph_edges.put(i.getKey(),k);
-            graph_in_edges.put(i.getKey(),r);
-        }
-        for(node_data n:g.getV()){
-            for(edge_data e:g.getE(n.getKey()))
-            {
-                this.connect(e.getSrc(),e.getDest(),e.getWeight());
+                graph_edges.put(i.getKey(), k);
+                graph_in_edges.put(i.getKey(), r);
             }
-        }
+            for (node_data n : g.getV()) {
+                for (edge_data e : g.getE(n.getKey())) {
+                    this.connect(e.getSrc(), e.getDest(), e.getWeight());
+                }
+            }
 
-        edges=g.edgeSize();
-        this.mode_count=g.getMC();
-        this.node_size=g.nodeSize();
+            edges = g.edgeSize();
+            this.mode_count = g.getMC();
+            this.node_size = g.nodeSize();
+        }
     }
 
     /**

@@ -34,7 +34,13 @@ public class Ex2 implements Runnable{
 
         if(a.length>0){
             id=Long.parseLong(a[0]);
-            scenario_num=Integer.parseInt(a[1]);
+            try {
+                scenario_num = Integer.parseInt(a[1]);
+            }
+            catch (NumberFormatException e){
+                System.out.println("Bad input");
+                System.exit(0);
+            }
         }
         else { entrance_pop_up(); }
         Thread client = new Thread(new Ex2());
@@ -67,7 +73,7 @@ public class Ex2 implements Runnable{
                 	//game.login(id);
                 init(game);
                 game.startGame();
-                _win.setTitle("Ex2 - OOP: (NONE trivial Solution) " + game.toString());
+                _win.setTitle("Ex2 - OOP: Catch the pokemon! " + game.toString());
                 int ind = 0;
                 while (game.isRunning()) {
 
@@ -83,13 +89,6 @@ public class Ex2 implements Runnable{
                     }
                 }
                 String res = game.toString();
-                try {
-                    FileWriter file_name = new FileWriter("./" + scenario_num + ".txt");
-                    file_name.write(res);
-                    file_name.flush();
-                } catch (IOException ex) {
-                    System.out.println("Couldn't save");
-                }
                 System.out.println(res);
 
 
@@ -123,7 +122,7 @@ public class Ex2 implements Runnable{
             double v = ag.getValue();
 
             if(dest==-1) {
-                if(calc_graph_value(agents_graph.get(ag.getID()),ffs)<10) {
+                if(calc_graph_value(agents_graph.get(ag.getID()),ffs)<10 || agents.size()==1) {
                     dest = nextNode(gg, src, ag.getID(), agents.size());
                     game.chooseNextEdge(ag.getID(), dest);
                     System.out.println("Agent: " + id + ", val: " + v + "   turned to node: " + dest);
@@ -171,16 +170,16 @@ public class Ex2 implements Runnable{
 
         Iterator <edge_data> it=g.getE(src).iterator();
 
-        if(shortest_path==null){
+        if(shortest_path==null || shortest_path.isEmpty()){
             return it.next().getDest();
         }
 
-        if(shortest_path.size()==2){
-            dt=50;
-        }
-        else{
-            dt=120;
-        }
+        //if(shortest_path.size()==2){
+        //    dt=90;
+        //}
+        //else{
+         //   dt=110;
+        //}
 
         ans=shortest_path.get(1).getKey();//second organ in list.
         return ans;
@@ -212,7 +211,7 @@ public class Ex2 implements Runnable{
         shortest_path = dwg_algo.shortestPath(src, edges_improved.get(0).getDest());
         Iterator <edge_data> it;
 
-        if(shortest_path==null){
+        if(shortest_path==null || shortest_path.isEmpty()){
             shortest_path = dwg_algo.shortestPath(src, edges_improved.get(0).getDest());
             //if(g.getE(src)!=null) {
             //    it = g.getE(src).iterator();
@@ -224,7 +223,7 @@ public class Ex2 implements Runnable{
             //}
         }
         if(shortest_path.size()==2){
-            dt=60;
+            dt=50;
 
         }
         else{

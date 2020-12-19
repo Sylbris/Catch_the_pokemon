@@ -78,17 +78,17 @@ public class GUI extends JPanel {
 
         }
         g.setColor(Color.BLACK);
-        g.fillRect(990, 30,200,100);
+        g.fillRect(this.getWidth()*6/100, this.getHeight()*2/100,this.getWidth()*26/100,this.getHeight()*10/100);
         g.setColor(Color.red);
-        g.drawRect(990, 30,200,100);
+        g.drawRect(this.getWidth()*6/100, this.getHeight()*2/100,this.getWidth()*26/100,this.getHeight()*10/100);
         g.setColor(Color.WHITE);
-        Font bigFont = new Font("Dialog", Font.BOLD, 18);
+        double ratio=this.getHeight()/this.getWidth();
+        Font bigFont = new Font("Dialog", Font.BOLD, (int)this.getWidth()/70);
         g.setFont(bigFont);
-        g.drawString("Moves : "+ _ar.getMoves(),1000,40);
-        g.drawString("Time elapsed : "+ _ar.get_time()/1000,1000,60);
-        g.drawString("Highest Score : "+ 442,1000,80);
-        g.drawString("Score : "+ Total_Score,1000,100);
-        g.drawString("Level : "+ _ar.getLevel(),1000,120);
+        g.drawString("Moves : "+ _ar.getMoves(),this.getWidth()*6/100,this.getHeight()*6/100);
+        g.drawString("Time elapsed : "+ _ar.get_time()/1000,this.getWidth()*6/100,this.getHeight()*10/100);
+        g.drawString("Score : "+ Total_Score,this.getWidth()*20/100,this.getHeight()*6/100);
+        g.drawString("Level : "+ _ar.getLevel(),this.getWidth()*20/100,this.getHeight()*10/100);
 
     }
     private void drawInfo(Graphics g) {
