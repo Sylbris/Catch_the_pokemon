@@ -1,12 +1,7 @@
 package gameClient;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.QuadCurve2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,8 +28,10 @@ public class GUI extends JPanel {
         int _ind = 0;
         this.setSize(1400,800);
         this.setVisible(true);
+        setPreferredSize(new Dimension(1400,800));
 
     }
+
 
     /**
      * Update our arena.
@@ -78,12 +75,20 @@ public class GUI extends JPanel {
         List<CL_Agent> rs = _ar.getAgents();
         for(int i=0;i<rs.size() && rs!=null ;i++){
             Total_Score+=rs.get(i).getValue();
+
         }
         g.setColor(Color.BLACK);
-        Font bigFont = new Font("Monospaced", Font.BOLD, 18);
+        g.fillRect(990, 30,200,100);
+        g.setColor(Color.red);
+        g.drawRect(990, 30,200,100);
+        g.setColor(Color.WHITE);
+        Font bigFont = new Font("Dialog", Font.BOLD, 18);
         g.setFont(bigFont);
+        g.drawString("Moves : "+ _ar.getMoves(),1000,40);
+        g.drawString("Time elapsed : "+ _ar.get_time()/1000,1000,60);
+        g.drawString("Highest Score : "+ 442,1000,80);
         g.drawString("Score : "+ Total_Score,1000,100);
-        g.drawString("Level : "+ 0,1000,120);
+        g.drawString("Level : "+ _ar.getLevel(),1000,120);
 
     }
     private void drawInfo(Graphics g) {
@@ -91,7 +96,6 @@ public class GUI extends JPanel {
         String dt = "none";
         for(int i=0;i<str.size();i++) {
             g.drawString(str.get(i)+" dt: "+dt,100,60+i*20);
-            g.drawString(_ar.getLevel()+" dt: "+dt,100,60+i*20);
         }
 
     }
@@ -211,6 +215,8 @@ public class GUI extends JPanel {
             g.drawImage(img, (int) fp.x() - r, (int) fp.y() - r,6*r, 6*r, null);
         }
         //g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
+        Font bigFont = new Font("Dialog", Font.BOLD, 16);
+        g.setFont(bigFont);
         g.drawString(""+n.getKey(), (int)fp.x(), (int)fp.y()-4*r);
     }
     private void drawEdge(edge_data e, Graphics g) {
@@ -221,22 +227,6 @@ public class GUI extends JPanel {
         geo_location d0 = this._w2f.world2frame(d);
         g.setColor(Color.BLACK);
         g.drawLine((int)s0.x(), (int)s0.y(), (int)d0.x(), (int)d0.y());
-
-        //double deltaX =  ( d0.y() - d0.y()+10 ) / 2;
-        //double deltaY =  ( d0.x() - d0.x() +10 ) / 2;
-        //if(s0.x()>d0.x()) {
-
-            //int[] x_points = {(int) d0.x(), (int) (d0.x()-deltaX), (int) (d0.x()+deltaX)};
-           // int[] y_points = {(int) d0.y()+10 , (int) (d0.y()-deltaY), (int) (d0.y()+deltaY)};
-
-           // g.fillPolygon(x_points, y_points, 3);
-        //}
-        //else{
-         //   int[] x_points = {(int) d0.x(), (int) d0.x() + 15, (int) d0.x() + 15};
-          //  int[] y_points = {(int) d0.y(), (int) d0.y() + 15, (int) d0.y() - 15};
-
-          //  g.fillPolygon(x_points, y_points, 3);
-        //}
 
     }
 }

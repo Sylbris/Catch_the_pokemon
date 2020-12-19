@@ -1,10 +1,8 @@
 package gameClient;
 
-import api.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
 
 /**
  * This Class represents the frame on which the game operates.
@@ -12,25 +10,50 @@ import java.util.Random;
 public class GUI_Frame extends JFrame {
 
 
+    private GUI gui;
+    private Arena _ar;
+
+    private static boolean gameStarted=false;
     /**
      * Create our game based on the arena.
      * @param ar
      */
     public GUI_Frame(Arena ar){
         super();
-        GUI gui=new GUI();
+        init();
+
+
         this.add(gui);
+
+
+
         //this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.setUndecorated(false);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setVisible(true);
-        this.setSize(1400,800);
+
         //this.setLayout(new BorderLayout());
-        //pack();
+
         gui.update(ar);
+        this.pack();
 
 
     }
+
+    public void update(Arena ar) {
+        this._ar = ar;
+        gui.update(ar);
+    }
+    public void init(){
+        gui=new GUI();
+        this.setUndecorated(false);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setPreferredSize(new Dimension(1400,800));
+        this.setVisible(true);
+        this.setSize(1400,800);
+    }
+
+
+
+
+
 
 
 }

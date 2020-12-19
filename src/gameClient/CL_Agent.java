@@ -21,6 +21,7 @@ public class CL_Agent {
 		private CL_Pokemon _curr_fruit;
 		private long _sg_dt;
 		private int on_pursuit=-1;
+		private static int start_node=-1;
 		
 		private double _value;
 		
@@ -86,6 +87,7 @@ public class CL_Agent {
 			else {_curr_edge = null;}
 			return ans;
 		}
+
 		public void setCurrNode(int src) {
 			this._curr_node = _gg.getNode(src);
 		}
@@ -103,7 +105,16 @@ public class CL_Agent {
 			// TODO Auto-generated method stub
 			return this._id;
 		}
-		public int getOn_pursuit(){
+
+	public int getStart_node() {
+		return start_node;
+	}
+
+	public void setStart_node(int start_node) {
+		this.start_node = start_node;
+	}
+
+	public int getOn_pursuit(){
 			return on_pursuit;
 		}
 		public void setOn_pursuit(int pokemon_value){

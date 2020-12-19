@@ -1,7 +1,6 @@
 package gameClient;
 
 import api.*;
-import com.google.gson.JsonObject;
 import gameClient.util.Point3D;
 import gameClient.util.Range;
 import gameClient.util.Range2D;
@@ -26,7 +25,8 @@ public class Arena {
 	private List<CL_Pokemon> _pokemons;
 	private game_service game;
 	private List<String> _info;
-	private static int level=0;
+	private int level;
+	private int moves;
 	private static Point3D MIN = new Point3D(0, 100,0);
 	private static Point3D MAX = new Point3D(0, 100,0);
 
@@ -96,18 +96,56 @@ public class Arena {
 	}
 
 	////////////////////////////////////////////////////
+	public void setLevel(int level){
+		this.level=level;
+	}
 	public int getLevel(){
+		return level;
+	}
+	public int levels(){
+		int game_level=0;
 		try {
-			JSONObject line = new JSONObject(game.toString());
-			JSONObject game_json = line.getJSONObject("GameServer");
-			int game_level = game_json.getInt("game_level");
-			return game_level;
+			JSONObject info=new JSONObject(game.toString());
+			JSONObject game_json = info.getJSONObject("GameServer");
+			game_level = game_json.getInt("game_level");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		return 0;
+		return game_level;
+	}
+	public int getMoves(){
+		return moves;
+	}
 
+	public void setMoves(int moves){
+		this.moves=moves;
+	}
+	public static int json2Level(String game){
+		int game_level=0;
+		try {
+			JSONObject line = new JSONObject(game);
+			JSONObject game_json = line.getJSONObject("GameServer");
+			game_level = game_json.getInt("game_level");
 
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return game_level;
+	}
+	public static int game_service_to_moves(String game){
+		int game_level=0;
+		try {
+			JSONObject line = new JSONObject(game);
+			JSONObject game_json = line.getJSONObject("GameServer");
+			game_level = game_json.getInt("moves");
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return game_level;
+	}
+	public long get_time(){
+		return game.timeToEnd();
 	}
 	public static List<CL_Agent> getAgents(String aa, directed_weighted_graph gg) {
 		ArrayList<CL_Agent> ans = new ArrayList<CL_Agent>();

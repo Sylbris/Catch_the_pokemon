@@ -13,10 +13,6 @@ class DWGraph_AlgoTest {
 
 
 
-    private void makegraph(){
-
-
-    }
     @Test
     void isConnected() {
         directed_weighted_graph g0;

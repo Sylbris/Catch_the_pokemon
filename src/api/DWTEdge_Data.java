@@ -5,6 +5,7 @@ public class DWTEdge_Data {
     private int dest;
     private double value=0;
     private static double ratio=0;
+    private static int chased=-1;
 
     public DWTEdge_Data(){
 
@@ -20,6 +21,12 @@ public class DWTEdge_Data {
         this.dest = dest;
         this.value = value;
         this.ratio = ratio;
+    }
+    public static int isChased(){
+        return chased;
+    }
+    public void setChased(int chased){
+        this.chased=chased;
     }
 
     public int getDest() {

@@ -215,12 +215,17 @@ public class DWGraph_DS implements directed_weighted_graph {
      */
     @Override
     public void connect(int src, int dest, double w) {
+        if(getEdge(src,dest)!=null){
+            removeEdge(src,dest);
+        }
         if(src!=dest && w>0 && !graph_edges.get(src).containsKey(dest) && graph_edges.containsKey(src) && graph_edges.containsKey(dest)) {
             edge_data e = new DWEdge_DS(src, dest, w); //Create a new edge.
             graph_edges.get(src).put(dest,e);//Select the node key->put it in the hashmap.
             graph_in_edges.get(dest).put(src,e);//put the same edge in the in edges hashmap.
             edges++;
+            mode_count++;
         }
+
 
 
     }
@@ -248,7 +253,10 @@ public class DWGraph_DS implements directed_weighted_graph {
      */
     @Override
     public Collection<edge_data> getE(int node_id) {
-        return graph_edges.get(node_id).values();
+        if(graph_edges.get(node_id)!=null) {
+            return graph_edges.get(node_id).values();
+        }
+        return null;
     }
 
     /**
@@ -276,6 +284,7 @@ public class DWGraph_DS implements directed_weighted_graph {
             graph_edges.remove(key);
             graph_in_edges.remove(key);
             edges-=j;
+            mode_count--;
         }
         return null;
     }
@@ -296,6 +305,7 @@ public class DWGraph_DS implements directed_weighted_graph {
             edges--; //we decrement the number of nodes in the graph.
             graph_edges.get(src).remove(dest); //HashMap<Integer,HashMap<Integer,edge_data>>
             graph_in_edges.get(dest).remove(src); //HashMap<Integer,HashMap<Integer,edge_data>>
+            mode_count--;
             return e;
         }
         return null;

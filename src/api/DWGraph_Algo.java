@@ -80,6 +80,50 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     }
 
     /**
+     *
+     * @param dwg
+     * @param amount_of_nodes
+     * @return
+     */
+    public ArrayList<node_data> bfs_n_nodes(directed_weighted_graph dwg, int amount_of_nodes, int src_node){
+        if(dwg.getNode(src_node)==null) {
+            return null;
+        }
+
+        for (node_data n : dwg.getV()) { // set the distance to max for all nodes from the source node.
+            n.setInfo("blue"); // lets mark all nodes as blue for unvisited.
+        }
+
+        Queue<node_data> queue = new LinkedList<>(); // we define a queue to save all nodes.
+        queue.add(dwg.getNode(src_node));//add the first none null node to the queue.
+        int count=0;//we mark the amount of nodes visited.
+        ArrayList <node_data>awl=new ArrayList<>();
+            while (count<amount_of_nodes ) { //bfs
+
+                node_data curr = queue.poll(); //pull the 1st node from the queue.
+
+                for (edge_data adjacent : dwg.getE(curr.getKey())) {//iterate all of currs neibours.
+
+                    if (dwg.getNode(adjacent.getDest()).getInfo() == "blue") {//if we haven't seen the neibour we put it in the queue.
+                        dwg.getNode(adjacent.getDest()).setInfo("red");
+                        count++;
+                        queue.add(dwg.getNode(adjacent.getDest()));
+                        awl.add(dwg.getNode(adjacent.getDest()));
+
+                    }
+
+
+                }
+                //count++;
+
+            }
+            return awl;
+
+
+
+    }
+
+    /**
      * Returns true if and only if (iff) there is a valid path from each node to each
      * other node. NOTE: assume directional graph (all n*(n-1) ordered pairs).
      * We preform bfs once , we revert the graph and we do it again.
@@ -202,7 +246,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
             return null;
 
         if(shortestPathDist(src,dest)==-1)
-            return null;//lets mark the distance between all nodes and the src.
+            return null;
 
        List<node_data> nodelist=new LinkedList<>();
 
@@ -211,23 +255,13 @@ public class DWGraph_Algo implements dw_graph_algorithms{
             return nodelist;
         }
        nodelist.add(dwg.getNode(dest));
+        DWTNode_DS curr=node_map.get(dest);
 
-       DWTNode_DS curr=node_map.get(dest);
-       /* if(curr==null){
-            return null;
-        }
-
-        */
         while(curr.getParent()!=-1){
             nodelist.add(dwg.getNode(curr.getParent()));
             curr=node_map.get(curr.getParent());
             }
 
-       /* for(node_data n:nodelist){
-            System.out.print(n.getKey()+ "-> ");
-        }
-
-        */
         Collections.reverse(nodelist);
 
        return nodelist;
@@ -245,11 +279,6 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     @Override
     public boolean save(String file) {
 
-       // GsonBuilder gsonBuilder=new GsonBuilder();
-
-        //gsonBuilder.registerTypeAdapter(directed_weighted_graph.class,new DWGraph_Json_Serializer());
-
-       //Gson customGson=gsonBuilder.create();
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(DWGraph_DS.class, new DWGraph_Json_Serializer())
                 .setPrettyPrinting()
@@ -257,16 +286,16 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 
         String json=gson.toJson(dwg);
 
-        //System.out.println(json);
-
         try {
             FileWriter file_name = new FileWriter("./"+file+ ".json");
             file_name.write(json);
             file_name.flush();
             return true;
+
         } catch (IOException ex) {
-            return false;
+            ex.printStackTrace();
         }
+        return false;
 
     }
 
@@ -284,9 +313,6 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     @Override
     public boolean load(String file) { //Needs some working.
         try {
-            //Gson gson=new Gson();
-
-            //String json=reader.toString();
 
             GsonBuilder gson=new GsonBuilder();
             gson.registerTypeAdapter(directed_weighted_graph.class,new DWGraph_Json_Deserializer());
@@ -299,8 +325,9 @@ public class DWGraph_Algo implements dw_graph_algorithms{
             return true;
 
         } catch (FileNotFoundException e) {
-            return false;
+            e.printStackTrace();
         }
+        return false;
 
     }
 }
