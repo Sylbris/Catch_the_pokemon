@@ -58,8 +58,13 @@ More information and implement methods can be found in Java docs :
 https://sylbris.github.io/Catch_the_pokemon/docs/index.html
 
 # Installation
-
 Copy the repository , run Ex2
+
+or
+
+From the command line :
+
+```java -jar Ex2.jar your_id level_num```
 
 # Overview
 
