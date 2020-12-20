@@ -34,6 +34,10 @@ class DWGraph_AlgoTest {
         boolean b = ag0.isConnected();
         //Assertions.assertFalse(b);
         Assertions.assertTrue(b);
+        g0.removeEdge(3,0);
+        ag0.init(g0);
+        b=ag0.isConnected();
+        Assertions.assertFalse(b);
     }
 
     @Test
@@ -107,9 +111,9 @@ class DWGraph_AlgoTest {
         assertTrue(ag0.save(str));
         directed_weighted_graph g1=new DWGraph_DS(g0);
         ag0.load(str);
-       // Assertions.assertEquals(ag0.getGraph(),g1);
-        //g0.removeNode(0);
-        //Assertions.assertNotEquals(g0,g1);
+        Assertions.assertEquals(ag0.getGraph(),g1);
+        g0.removeNode(0);
+        Assertions.assertNotEquals(g0,g1);
 
 
     }

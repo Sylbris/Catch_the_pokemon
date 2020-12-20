@@ -8,9 +8,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 import api.*;
 
@@ -19,7 +16,6 @@ import javax.swing.*;
 public class Ex2 implements Runnable{
     private static GUI_Frame _win;
     private static Arena _ar;
-    private static int arg=0;
     private static long dt=100;
     private static HashMap<Integer,directed_weighted_graph> agents_graph;
     private static directed_weighted_graph dwg_reloaded;
@@ -27,7 +23,6 @@ public class Ex2 implements Runnable{
     private static int scenario_num=23;
     private static long id=0;
     private static String [] levels;
-    private static JList list;
 
 
     public static void main(String[] a) {
@@ -151,6 +146,7 @@ public class Ex2 implements Runnable{
      */
     private static int nextNode(directed_weighted_graph g, int src, int agent_id, int num_of_agents) {
         int ans = -1;
+        dt=100;
         dw_graph_algorithms dwg_algo=new DWGraph_Algo();
         dwg_algo.init(g);
 
@@ -159,7 +155,6 @@ public class Ex2 implements Runnable{
         edges_improved.sort(DWEdge_Data_Comparator);
 
         List<node_data> shortest_path=null;
-        DWTEdge_Data e=new DWTEdge_Data();
 
         shortest_path = dwg_algo.shortestPath(src, edges_improved.get(agent_id).getDest());
 
@@ -224,11 +219,11 @@ public class Ex2 implements Runnable{
             //}
         }
         if(shortest_path.size()==2){
-            dt=50;
+            dt=70;
 
         }
         else{
-            dt=125;
+            dt=120;
         }
         if(src==edges_improved.get(0).getDest())
             return ans=edges_improved.get(0).getSrc();
@@ -337,8 +332,6 @@ public class Ex2 implements Runnable{
         dwg_reloaded=Graph_maker(g);
         dwg_algo = new DWGraph_Algo();
         dwg_algo.init(dwg_reloaded);
-
-        list=new JList(levels);
 
         //Setting our game
         _ar = new Arena(); //builds the arena of the graph.

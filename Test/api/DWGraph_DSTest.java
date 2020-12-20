@@ -1,6 +1,7 @@
 package api;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 
 import java.util.*;
 
@@ -9,9 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DWGraph_DSTest {
     private static Random _rnd = null;
 
-    @org.junit.jupiter.api.Test
-    void reverse_graph() {
-    }
+
     @org.junit.jupiter.api.Test
     void runtime(){
         long start = new Date().getTime();
@@ -132,6 +131,7 @@ class DWGraph_DSTest {
         dwg.connect(0,1,3.5);
         dwg.connect(2,0,4.6);
         dwg.connect(2,0,5.4);
+        dwg.connect(2,0,2.4);
         assertEquals(dwg.edgeSize(),3);
     }
 

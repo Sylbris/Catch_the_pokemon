@@ -291,7 +291,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         String json=gson.toJson(dwg);
 
         try {
-            FileWriter file_name = new FileWriter("./"+file+ ".json");
+            FileWriter file_name = new FileWriter(file);
             file_name.write(json);
             file_name.flush();
             return true;
@@ -322,7 +322,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
             gson.registerTypeAdapter(directed_weighted_graph.class,new DWGraph_Json_Deserializer());
             Gson customGson=gson.create();
 
-            FileReader reader=new FileReader("./"+file+".json");
+            FileReader reader=new FileReader(file);
             directed_weighted_graph dwg_reloaded=customGson.fromJson(reader,directed_weighted_graph.class);
 
             dwg=dwg_reloaded;
