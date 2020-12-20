@@ -72,6 +72,23 @@ More information and implement methods can be found in Java docs :
 
 https://sylbris.github.io/Catch_the_pokemon/docs/index.html
 
+# Project Structure 
+
+![alt text](https://i.ibb.co/FBvdQkS/project-structure.png)
+
+The project is divided into 2 main folders :
+1. API 
+
+  Contains our graph implementation files.
+  
+2. gameClient
+
+  has all our game files: 
+  
+  A. Ex2 the client itself.
+  B. GUI & GUI_Frame is our graphics engine.
+  C. Arena, CL_Agent, CL_Pokemon is the logic classes.
+  
 # Installation
 Copy the repository , run Ex2
 
