@@ -24,6 +24,13 @@ I choose a Hashmap since its cost efficient regarding insertion and deletion (O(
 The second part is a dynamic game in which i go extensively about in the Wikipages.
 https://github.com/Sylbris/Catch_the_pokemon/wiki
 
+To implement the movement of the game i used a frame that has a panel inside it.
+In the panel i use the paint method and paint each of the game components.
+
+Please read the java doc for further information:
+
+https://sylbris.github.io/Catch_the_pokemon/docs/index.html
+
 # Methods
 | DWGraph_DS  | Use | Run time | 
 | ------------- | ------------- | --------|
