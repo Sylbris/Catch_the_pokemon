@@ -39,8 +39,8 @@ public class DWGraph_DS implements directed_weighted_graph {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        DWGraph_DS dwg = (DWGraph_DS) o;
-        if (o == null || getClass() != o.getClass() || dwg.node_size!=this.node_size || dwg.edgeSize()!=this.edgeSize()) return false;
+        directed_weighted_graph dwg = (DWGraph_DS) o;
+        if (o == null || getClass() != o.getClass() || dwg.nodeSize()!=this.node_size || dwg.edgeSize()!=this.edgeSize()) return false;
         for (node_data n : dwg.getV()) {
             if(!n.equals(graph_nodes.get(n.getKey())))
                 return false;

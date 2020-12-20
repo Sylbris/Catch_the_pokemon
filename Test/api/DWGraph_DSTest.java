@@ -9,8 +9,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DWGraph_DSTest {
     private static Random _rnd = null;
+    private static directed_weighted_graph g0;
 
+    @BeforeAll
+    static void createGraph(){
+        g0=DWGraph_DSTest.graph_creator(6,0,1);
+        g0.connect(0,1,1);
+        g0.connect(0,3,5);
+        g0.connect(1,4,1);
+        g0.connect(1,2,10);
+        g0.connect(2,4,4);
+        g0.connect(2,3,2);
+        g0.connect(3,0,3);
+        g0.connect(4,5,1);
+        g0.connect(5,2,2);
 
+    }
     @org.junit.jupiter.api.Test
     void runtime(){
         long start = new Date().getTime();
@@ -31,31 +45,29 @@ class DWGraph_DSTest {
 
     @org.junit.jupiter.api.Test
     void getEdge() {
-        directed_weighted_graph dwg=new DWGraph_DS();
-        for(int i=0;i<3;i++){
-            node_data n=new DWNode_DS();
-            dwg.addNode(n);
-        }
-        dwg.connect(0,2,1.5);
-        assertEquals(dwg.getEdge(0,2).getWeight(),1.5);
-        assertNotEquals(dwg.getEdge(0,2).getWeight(),2);
-        assertEquals(dwg.getEdge(0,4),null);
-        assertEquals(dwg.getEdge(2,0),null);
+        directed_weighted_graph g1=new DWGraph_DS(g0);
+        g1.connect(0,2,1.5);
+        assertEquals(g1.getEdge(0,2).getWeight(),1.5);
+        assertNotEquals(g1.getEdge(0,2).getWeight(),2);
+        g1.connect(0,2,2);
+        assertEquals(g1.getEdge(0,2).getWeight(),2);
     }
 
 
     @org.junit.jupiter.api.Test
     void connect() {
+        directed_weighted_graph g1=new DWGraph_DS(g0);
+        g1.connect(3,5,-1);
+        assertEquals(g1.getEdge(3,5),null);
+        g1.connect(3,5,0.01);
+        assertEquals(g1.getEdge(3,5).getWeight(),0.01);
+        g1.connect(2,2,2);
+        assertEquals(g1.getEdge(2,2),null);
     }
 
     @org.junit.jupiter.api.Test
     void getV() {
-        directed_weighted_graph dwg=new DWGraph_DS();
-        for(int i=0;i<3;i++){
-            node_data n=new DWNode_DS();
-            dwg.addNode(n);
-        }
-        Collection <node_data> n= dwg.getV();
+        Collection <node_data> n= g0.getV();
         Iterator<node_data> i=n.iterator();
         while(i.hasNext()){
             node_data j=i.next();
@@ -65,74 +77,87 @@ class DWGraph_DSTest {
 
     @org.junit.jupiter.api.Test
     void getE() {
-        directed_weighted_graph dwg=new DWGraph_DS();
-        for(int i=0;i<3;i++){
-            node_data n=new DWNode_DS();
-            dwg.addNode(n);
-        }
-        dwg.connect(0,2,1.5);
-        dwg.connect(0,3,6.4);
-        dwg.connect(0,1,3.5);
-
-        Collection <edge_data> n= dwg.getE(0);
+        directed_weighted_graph g1=new DWGraph_DS(g0);
+        Collection <edge_data> n= g1.getE(0);
         Iterator<edge_data> i=n.iterator();
 
         while(i.hasNext()){
             edge_data j=i.next();
             Assertions.assertNotNull(j);
         }
+        g1.removeNode(0);
+        Collection <edge_data> r= g1.getE(0);
+        assertNull(r);
+
 
 
     }
 
     @org.junit.jupiter.api.Test
     void removeNode() {
+        directed_weighted_graph g1=new DWGraph_DS(g0);
+        g1.removeNode(0);
+        assertEquals(g1.edgeSize(),6);
+        assertEquals(g1.nodeSize(),5);
+        node_data n=new DWNode_DS(10);
+        g1.addNode(n);
+        assertEquals(g1.edgeSize(),6);
+        node_data n1=new DWNode_DS(0);
+        g1.addNode(n1);
+        assertEquals(g1.edgeSize(),6);
     }
 
     @org.junit.jupiter.api.Test
     void removeEdge() {
-        directed_weighted_graph dwg=new DWGraph_DS();
-        for(int i=0;i<3;i++){
-            node_data n=new DWNode_DS();
-            dwg.addNode(n);
-        }
-        dwg.connect(0,2,1.5);
-        dwg.connect(0,1,3.5);
-        dwg.connect(2,0,4.6);
-
-        dwg.removeEdge(0,2);
-        assertEquals(dwg.getEdge(0,2),null);
-        assertEquals(dwg.getEdge(2,0).getWeight(),4.6);
-        dwg.removeEdge(0,2);
-        assertEquals(dwg.getEdge(0,2),null);
+        directed_weighted_graph g1=new DWGraph_DS(g0);
+        g1.removeEdge(0,3);
+        assertEquals(g1.getEdge(0,3),null);
+        assertEquals(g1.getEdge(3,0).getWeight(),3);
+        g1.removeEdge(0,2);
+        assertEquals(g1.getEdge(0,2),null);
+        g1.connect(0,2,1);
+        assertEquals(g1.getEdge(0,2).getWeight(),1);
+        g1.removeEdge(0,19);
+        assertEquals(g1.getEdge(0,19),null);
+        assertEquals(g1.getEdge(15,2),null);
 
     }
 
     @org.junit.jupiter.api.Test
     void nodeSize() {
-        directed_weighted_graph dwg=new DWGraph_DS();
-        for(int i=0;i<3;i++){
-            node_data n=new DWNode_DS();
-            dwg.addNode(n);
-        }
-        assertEquals(dwg.nodeSize(),3);
-        dwg.removeNode(0);
-        assertEquals(dwg.nodeSize(),2);
+        directed_weighted_graph g1=new DWGraph_DS(g0);
+        assertEquals(g1.nodeSize(),6);
+        g1.removeNode(0);
+        assertEquals(g1.nodeSize(),5);
+        g1.removeNode(0);
+        assertEquals(g1.nodeSize(),5);
     }
 
     @org.junit.jupiter.api.Test
     void edgeSize() {
-        directed_weighted_graph dwg=new DWGraph_DS();
-        for(int i=0;i<3;i++){
-            node_data n=new DWNode_DS();
-            dwg.addNode(n);
-        }
-        dwg.connect(0,2,1.5);
-        dwg.connect(0,1,3.5);
-        dwg.connect(2,0,4.6);
-        dwg.connect(2,0,5.4);
-        dwg.connect(2,0,2.4);
-        assertEquals(dwg.edgeSize(),3);
+        directed_weighted_graph g1=new DWGraph_DS(g0);
+        assertEquals(g1.edgeSize(),9);
+        g1.removeEdge(2,0);
+        assertEquals(g1.edgeSize(),9);
+        g1.removeEdge(5,2);
+        assertEquals(g1.edgeSize(),8);
+        g1.removeEdge(5,2);
+        assertEquals(g1.edgeSize(),8);
+        g1.connect(2,2,-3);
+        assertEquals(g1.edgeSize(),8);
+        /*
+        g0.connect(0,1,1);
+        g0.connect(0,3,5);
+        g0.connect(1,4,1);
+        g0.connect(1,2,10);
+        g0.connect(2,4,4);
+        g0.connect(2,3,2);
+        g0.connect(3,0,3);
+        g0.connect(4,5,1);
+        g0.connect(5,2,2);
+
+        */
+
     }
 
     /**
