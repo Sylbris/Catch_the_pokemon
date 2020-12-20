@@ -53,6 +53,21 @@ https://github.com/Sylbris/Catch_the_pokemon/wiki
 | save(String file)  | Saves the graph in json format  | O(V+E) | 
 | load(String load)  | Load the graph in json format  | O(V+E) | 
 
+
+| Ex2  | Use | Run time | 
+| ------------- | ------------- | --------|
+| entrance_pop_ip | choose level | O(1) | 
+| run()  | core of the game  | O(1) | 
+| moveAgants()  | goes over each agent and chooses a step. | O(num_of_agents*(V+E) |
+| nextNode() | choose the next move for the agent.  | O(V+E) | 
+| nextNode_Many_agents()  | choose next move if many agents are active  | O(V+E) | 
+| calculate_edges_worth  | goes over the graph and calculates each edge worth and updates it.  | O(V+E) | 
+| calculate_sub_graph(int amount)  | return a sub graph  | O(amount) | 
+| calc_graph_value  | Calculate the total graph value by its edges  | O(V+E) | 
+| Graph_maker  | Load the graph in json format  | O(V+E) | 
+| init(game_service game)  | initiate the game  | -- | 
+
+
 More information and implement methods can be found in Java docs :
 
 https://sylbris.github.io/Catch_the_pokemon/docs/index.html
