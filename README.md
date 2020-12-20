@@ -4,7 +4,7 @@
 [![Generic badge](https://img.shields.io/badge/build-passing-<COLOR>.svg)](https://shields.io/)
 [![Generic badge](https://img.shields.io/badge/gson-2.8.6-yellow.svg)](https://shields.io/)
 [![Generic badge](https://img.shields.io/badge/JavaDoc-Click-green.svg)](https://sylbris.github.io/Catch_the_pokemon/docs/index.html)
-[![Maintenance](https://img.shields.io/badge/issues-2-red.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
+[![Maintenance](https://img.shields.io/badge/issues-0-red.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 
 Catch the pokemon is an assignment given by Ariel university in OOP class.
 The purpose of the assignment is to design an algorithmic solution to catch 
